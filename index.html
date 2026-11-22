@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d0e10">
+<title>SHAPES LAB — Generatieve visuals</title>
+<style>
+:root{--bg:#0c0d0f;--panel:#151719;--panel2:#1c1e21;--edge:#303338;--muted:#888d94;--soft:#babdc3;--text:#f4f2ec;--hi:#d6e3db;--radius:12px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.48 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.35;cursor:not-allowed}button:focus-visible,input:focus-visible{outline:2px solid #d6e3db;outline-offset:3px}a{color:inherit}header{display:flex;align-items:center;justify-content:space-between;padding:21px 3.5vw;border-bottom:1px solid var(--edge);gap:15px}.brand{display:flex;align-items:center;gap:14px;text-decoration:none;font-weight:600;letter-spacing:.16em;font-size:12px}.brandmark{width:27px;height:27px;border:1px solid var(--text);border-radius:50%;position:relative}.brandmark:before,.brandmark:after{content:"";position:absolute;left:50%;top:50%;width:20px;height:1px;background:var(--text);transform:translate(-50%,-50%) rotate(60deg)}.brandmark:after{transform:translate(-50%,-50%) rotate(-60deg)}header .right{display:flex;align-items:center;gap:22px}.navlink{background:none;border:0;color:var(--soft);padding:4px 0;font-size:12px}.navlink:hover{color:white}.navlink.active{color:white;border-bottom:1px solid white}.eyebrow{text-transform:uppercase;color:var(--muted);font-size:10px;letter-spacing:.18em;font-weight:600}main{max-width:1660px;margin:auto}.landing{padding:74px 3.5vw 30px}.landing h1{font-size:clamp(42px,7vw,104px);line-height:1.01;letter-spacing:-.075em;font-weight:500;max-width:970px;margin:21px 0 24px}.landing p{color:#b1b4b8;font-size:16px;max-width:625px;line-height:1.7}.landing-actions{display:flex;align-items:center;gap:11px;margin-top:29px;flex-wrap:wrap}.btn{padding:11px 17px;border:1px solid #45484d;background:transparent;color:var(--text);border-radius:5px;font-size:12px;font-weight:550;transition:background .18s,transform .15s;display:inline-flex;gap:9px;justify-content:center;align-items:center}.btn:hover{background:#292b30}.btn:active{transform:scale(.985)}.btn.primary{background:#e4e4df;border-color:#e4e4df;color:#151719}.btn.primary:hover{background:#fff}.btn.tiny{padding:8px 11px;font-size:11px}.btn.icononly{padding:9px 11px}.gallery{padding:34px 3.5vw 95px}.sectionrow{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:18px}.sectionrow h2{font-size:16px;font-weight:500;letter-spacing:-.015em;margin:6px 0 0}.filters{display:flex;flex-wrap:wrap;gap:6px}.filter{border:1px solid #34363a;background:transparent;color:var(--muted);padding:7px 11px;border-radius:50px;font-size:11px}.filter.active{color:#111;background:#e3e4de;border-color:#e3e4de}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}.tile{background:#17191b;border:1px solid #292b2f;border-radius:6px;padding:9px;text-align:left;color:white;transition:border-color .2s,transform .2s;overflow:hidden;position:relative}.tile:hover{transform:translateY(-3px);border-color:#777d80}.tile .art{width:100%;aspect-ratio:1;background:#131416;border-radius:3px;overflow:hidden}.tile svg{display:block;width:100%;height:100%}.tile footer{padding:13px 5px 5px;display:flex;align-items:center;justify-content:space-between;gap:9px}.tile b{font-weight:500;font-size:13px}.tile small{color:#868b91;font-size:10px}.tile .arrow{font-size:21px;color:#b3bac0;font-weight:300}.studio{display:none;grid-template-columns:minmax(0,1fr) 320px;min-height:calc(100vh - 75px)}body.editing .landing,body.editing .gallery{display:none}body.editing .studio{display:grid}.stagepanel{padding:32px clamp(16px,4vw,70px) 40px;min-width:0;display:flex;flex-direction:column}.stagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:22px}.stagehead h1{margin:5px 0 0;font-size:clamp(23px,3vw,35px);font-weight:500;letter-spacing:-.045em}.stagehead p{margin:7px 0 0;color:#8b9095;font-size:12px}.stagehead .tools{display:flex;gap:7px;flex-wrap:wrap;justify-content:end}.visualshell{max-height:min(75vh,900px);aspect-ratio:1;width:100%;max-width:850px;align-self:center;position:relative;border:1px solid #303238;box-shadow:0 25px 80px #0005;background:#0d0e10;overflow:hidden}.visualshell svg{display:block;width:100%;height:100%}.visualshell:fullscreen{max-width:none;max-height:none;aspect-ratio:auto;width:100%;height:100%;border:0;display:grid;place-items:center;background:#000}.visualshell:fullscreen svg{width:min(100vw,100vh);height:min(100vw,100vh)}.visualshell .poster{pointer-events:none;position:absolute;inset:0;display:none;flex-direction:column;justify-content:space-between;padding:7.5%;color:var(--posterink,#fff)}.visualshell.poster-on .poster{display:flex}.poster .topline{font-size:12px;letter-spacing:.29em}.poster .posterbottom{display:flex;justify-content:space-between;align-items:end;gap:15px;border-top:1px solid currentColor;padding-top:16px}.poster .postertitle{font-size:clamp(35px,5.2vw,73px);font-weight:500;line-height:.9;letter-spacing:-.07em;word-break:break-word}.poster .postersub{writing-mode:vertical-rl;font-size:10px;text-transform:uppercase;letter-spacing:.16em}.stagefoot{max-width:850px;width:100%;align-self:center;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:14px;color:#878d93;font-size:11px}.stagefoot>div{display:flex;gap:7px;align-items:center}.stagefoot .statusdot{width:7px;height:7px;border-radius:50%;background:#5f6b69}.statusdot.on{background:#c9f0c4;box-shadow:0 0 10px #9bcf9b}.stagefoot .hint{max-width:470px}.side{background:#151719;border-left:1px solid #33363a;min-height:calc(100vh - 75px);padding:29px 25px 45px;overflow:auto}.side h2{font-size:13px;font-weight:500;margin:0 0 3px}.side .sub{font-size:11px;color:#858b91;margin:0 0 29px}.control{margin:23px 0}.controlhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.controlhead label{font-size:12px;color:#d7d8da}.num{font-size:11px;color:#9fa4a9;font-variant-numeric:tabular-nums}.control input[type=range]{appearance:none;width:100%;height:2px;background:#4d5257;outline:0;border-radius:8px;cursor:pointer}.control input[type=range]::-webkit-slider-thumb{appearance:none;width:12px;height:12px;border-radius:50%;background:#edece5;border:2px solid #edece5;box-shadow:0 0 0 3px #2b2e32}.control input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;background:#edece5;border:0}.divider{border-top:1px solid #34363b;margin:25px 0}.side .groupname{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#969b9e;margin-bottom:17px}.colorrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.colorslot{display:flex;align-items:center;gap:7px;flex-direction:column;font-size:11px;color:#b6b9be}.colorslot input{padding:0;width:100%;height:39px;border:1px solid #53565a;background:transparent;border-radius:4px;cursor:pointer}.colorslot input::-webkit-color-swatch-wrapper{padding:2px}.colorslot input::-webkit-color-swatch{border:0;border-radius:1px}.checkline{display:flex;align-items:center;gap:11px;margin:15px 0;color:#c5c9cc;font-size:12px}.checkline input{accent-color:#d6e3db}.upload{display:flex;align-items:center;justify-content:center;position:relative;width:100%;border:1px dashed #4c5157;border-radius:4px;padding:11px;color:#b9bec1;font-size:12px;cursor:pointer}.upload input{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer}.smallprint{font-size:11px;color:#8c9197;margin-top:9px;line-height:1.6}.exportrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.exportrow .btn{width:100%;padding:10px 5px}.top-close{border:0;background:none;color:#9a9fa2;padding:2px 0}.top-close:hover{color:#fff}.notice{padding:10px 12px;border:1px solid #3f4744;border-radius:5px;background:#1d2623;color:#dae7dc;font-size:11px;margin-top:16px;display:none}.notice.show{display:block}.presetlist{display:flex;flex-wrap:wrap;gap:7px}.preset{border:1px solid #4b5154;background:#1e2223;color:#d5d6d7;border-radius:4px;padding:6px 9px;font-size:11px}.preset:hover{background:#35393b}.footer{padding:15px 3.5vw 35px;display:flex;justify-content:space-between;color:#737a81;font-size:11px;border-top:1px solid #26292b}.footer a{color:#abb0b5}body.editing .footer{display:none}.micline{display:flex;align-items:center;justify-content:space-between;margin:18px 0;gap:8px;font-size:12px}.micline button{min-width:80px}.wavebar{height:3px;background:#303438;width:100%;overflow:hidden;border-radius:3px;margin:3px 0 14px}.wavebar span{display:block;height:100%;background:#dae5dc;width:0%;transition:width .12s}body.live .studio{grid-template-columns:1fr}body.live .side,body.live .stagehead,body.live .stagefoot .hint{display:none}body.live .stagepanel{padding:0;min-height:calc(100vh - 75px);justify-content:center;align-items:center}body.live .visualshell{max-height:calc(100vh - 100px);max-width:calc(100vh - 100px);border:0}body.live .stagefoot{max-width:calc(100vh - 100px);padding:7px 12px}.hide{display:none!important}@media(max-width:1160px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.studio{grid-template-columns:minmax(0,1fr) 285px}.side{padding:25px 17px}}@media(max-width:800px){header{padding:18px 20px}.landing{padding:55px 20px 20px}.gallery{padding:30px 20px 70px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.studio{grid-template-columns:1fr}.side{border:0;border-top:1px solid #34363b;min-height:auto}.stagepanel{padding:22px 16px 25px}.visualshell{max-height:75vh}.landing h1{font-size:clamp(40px,11vw,75px)}.sectionrow{align-items:start;flex-direction:column}.stagehead .tools{gap:4px}.stagehead .tools .btn{padding:8px 9px}.stagehead{align-items:center}.side .control{max-width:none}.footer{padding:20px}.stagefoot{padding:9px 3px}body.live .stagepanel{min-height:calc(100vh - 63px)}}@media(max-width:450px){header .right{gap:11px}.brand{font-size:10px;letter-spacing:.08em}.grid{gap:8px}.tile{padding:5px}.tile footer{padding:7px 4px 5px}.tile b{font-size:11px}.tile small{font-size:9px}.stagehead p{display:none}.stagehead .tools .btn{font-size:10px}.visualshell{max-height:none}.poster .postertitle{font-size:35px}}
+
+/* Fullscreen v3: square artwork is centered, never cropped, and always kept inside a safe margin.
+   The background color fills the entire screen, including the wide side areas. */
+.visualshell:fullscreen,.visualshell:-webkit-full-screen{width:100vw!important;height:100vh!important;width:100dvw!important;height:100dvh!important;max-width:none!important;max-height:none!important;aspect-ratio:auto!important;border:0!important;box-shadow:none!important;display:block!important;position:relative!important;overflow:hidden!important;background:var(--art-bg,#0d0e10)!important}
+.visualshell:fullscreen #visual,.visualshell:-webkit-full-screen #visual{position:absolute!important;inset:clamp(16px,4vmin,52px)!important;width:auto!important;height:auto!important;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.visualshell:fullscreen #visual svg,.visualshell:-webkit-full-screen #visual svg{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important}
+/* Live mode uses the same 'contain' layout without cropping. */
+body.live .visualshell{background:var(--art-bg,#0d0e10)}
+body.live #visual svg{object-fit:contain}
+.record-float{display:none;position:absolute;top:18px;right:18px;z-index:15;gap:9px;align-items:center;padding:7px;border:1px solid #ffffff32;border-radius:7px;background:#121416d9;box-shadow:0 4px 28px #0006;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.visualshell:fullscreen .record-float,.visualshell:-webkit-full-screen .record-float,body.live .record-float{display:flex}
+.record-float .btn{white-space:nowrap}
+.record-time{color:#e8e8e3;font-variant-numeric:tabular-nums;font-size:12px;padding:0 4px}
+.floating-dest{font-size:10px;color:#afc9c0;border-left:1px solid #7b8c8360;padding-left:9px}
+.recording-active #recordTop,.recording-active #recordBtn,.recording-active #recordFloatBtn{border-color:#c96767;color:#ffb6ae;background:#3a1717}
+.recording-active .record-time:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff6767;vertical-align:middle;margin-right:8px;box-shadow:0 0 0 3px #a2272740;animation:recpulse 1.35s ease-in-out infinite}
+@keyframes recpulse{50%{opacity:.35}}
+.video-select{display:block;width:100%;margin:8px 0 10px;padding:9px;border:1px solid #52565a;border-radius:4px;background:#222528;color:#f1f2ef;font-size:12px}
+.palette-label{display:block;font-size:12px;color:#d7d8da;margin:0 0 6px}.palette-select{margin:0 0 10px}.palette-preview{height:20px;display:flex;gap:5px;margin-bottom:10px}.palette-preview span{flex:1;border:1px solid #ffffff25;border-radius:3px;transition:background .2s}.palette-help{margin-top:0!important;margin-bottom:14px!important}
+.video-record-button{width:100%;margin-top:3px}
+.video-hint{margin-top:9px;line-height:1.55}
+/* Video output presets and their WYSIWYG framing. Guides exist only in the editor, not the export. */
+.record-panel{margin-top:21px;padding:16px 13px 14px;border:1px solid #3c4143;background:#1b2021;border-radius:7px}
+.record-panel-title{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.record-panel-chip{border:1px solid #55655e;border-radius:100px;color:#bbcdc1;padding:3px 7px;font-size:9px;letter-spacing:.015em}
+.destination-label{display:block;font-size:13px;color:#f1f3ee;font-weight:600;margin:5px 0 7px}
+.record-panel select{margin:0 0 12px;background:#282d2d}
+.record-snapshot{display:grid;grid-template-columns:95px minmax(0,1fr);gap:12px;align-items:center}
+.record-frame-wrap{min-height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px}
+.record-frame-label{font-size:9px;color:#a5b0ad;text-align:center}
+.record-preview{width:90px;aspect-ratio:16 / 9;position:relative;display:flex;align-items:center;justify-content:center;background:#0d0e10;overflow:hidden;border:1px solid #63706b;transition:aspect-ratio .16s,width .16s;box-shadow:0 4px 13px #0006}
+.record-preview[data-orientation="portrait"]{width:65px;aspect-ratio:9 / 16}
+.record-preview-visual{width:92%;aspect-ratio:1;display:grid;place-items:center;flex:none;max-height:92%}
+.record-preview-visual svg{display:block;width:100%;height:100%;object-fit:contain}
+.record-safe-guide{position:absolute;inset:5%;border:1px dashed #e4e6e066;pointer-events:none}
+.record-preview[data-orientation="portrait"] .record-safe-guide{inset:14% 7% 21%}
+.record-specs{font-size:11px;line-height:1.8;color:#d5ddda;min-width:0}
+.record-specs .spec-label{color:#8a9996}.record-specs b{font-weight:500;color:#e9eeea}
+.record-compat{font-size:10.5px;color:#b6c9c0;line-height:1.55;margin:10px 0 13px;padding:9px;border-radius:4px;background:#27322f;border:1px solid #40534a}
+.record-compat.warn{color:#f0d4ae;background:#382f27;border-color:#5d4838}
+.record-panel .video-record-button{margin:0}
+@media(max-width:380px){.record-snapshot{grid-template-columns:80px minmax(0,1fr);gap:8px}.record-preview{width:78px}}
+
+@media(max-width:550px){.record-float{top:10px;right:10px}.record-float .btn{font-size:10px;padding:8px}.record-time{font-size:10px}}
+</style>
+</head>
+<body>
+<header>
+ <a href="#" class="brand" id="home"><span class="brandmark"></span><span>SHAPES <span style="color:#717980">/</span> LAB</span></a>
+ <div class="right"><button class="navlink active" id="navGallery">Galerij</button><button class="navlink" id="navStudio">Editor</button><button class="btn tiny" id="navLive">◉ &nbsp; Live modus</button></div>
+</header>
+<main>
+ <section class="landing"><div class="eyebrow">Experiment 001 / Generatieve beeldtaal</div><h1>Geometrie<br>die ademt.</h1><p>Een interactieve experimenteerruimte voor beeld, beweging en ritme. Kies een systeem, verander de regels en ontdek wat er ontstaat. Alle patronen zijn nieuw geprogrammeerd.</p><div class="landing-actions"><button class="btn primary" id="begin">Open de editor <span>↗</span></button><button class="btn" id="scrollGallery">Ontdek de 8 studies ↓</button></div></section>
+ <section class="gallery" id="gallery"><div class="sectionrow"><div><div class="eyebrow">De bibliotheek</div><h2>Acht generatieve studies</h2></div><div class="filters" id="filters"><button class="filter active" data-filter="alles">Alles</button><button class="filter" data-filter="radiaal">Radiaal</button><button class="filter" data-filter="stroming">Stroming</button><button class="filter" data-filter="raster">Raster</button><button class="filter" data-filter="favoriet">Bewaard</button></div></div><div class="grid" id="tiles"></div></section>
+ <section class="studio" id="studio">
+  <div class="stagepanel">
+   <div class="stagehead"><div><button class="top-close" id="back">← Terug naar de galerij</button><h1 id="patternTitle">Prism Studies</h1><p id="patternDesc">Spiegelingen, lijnen en licht.</p></div><div class="tools"><button class="btn tiny" id="shuffle" title="Nieuwe variatie">↻ &nbsp; Randomiseer</button><button class="btn tiny" id="playBtn">Ⅱ &nbsp; Pauze</button><button class="btn tiny" id="recordTop" title="Start of stop een video-opname">● &nbsp; Opnemen</button><button class="btn tiny" id="fullscreen" title="Volledig scherm">⛶</button></div></div>
+   <div class="visualshell" id="visualshell"><div id="visual" style="width:100%;height:100%"></div><div class="record-float" id="recordFloat"><span class="record-time" id="recordTime">00:00</span><span class="floating-dest" id="recordFloatDestination">YouTube</span><button class="btn tiny" id="recordFloatBtn" title="Video-opname starten of stoppen">● &nbsp; Opnemen</button></div><div class="poster" id="poster"><div class="topline">SHAPES / EXPERIMENTAL STUDIES</div><div class="posterbottom"><div class="postertitle" id="posterText">LIGHT<br>FORMS</div><div class="postersub" id="posterSub">A live audiovisual study — 2026</div></div></div></div>
+   <div class="stagefoot"><div><span class="statusdot on" id="statusDot"></span><span id="stateText">Animatie actief</span></div><div class="hint">Tip: gebruik de pijltjestoetsen voor andere studies · spatie = afspelen/pauzeren</div><div><button class="btn tiny" id="saveVariation">♡ &nbsp; Bewaar</button></div></div>
+  </div>
+  <aside class="side"><h2>Parameters</h2><p class="sub">Verander de wiskundige regels, niet de afbeelding.</p><div class="groupname">Structuur</div><div id="sliders"></div><div class="divider"></div><div class="groupname">Kleur &amp; contrast</div><label for="paletteSelect" class="palette-label">Driekleurenpalet</label><select id="paletteSelect" class="video-select palette-select" aria-label="Kies een driekleurenpalet"></select><div class="palette-preview" id="palettePreview" aria-hidden="true"><span></span><span></span><span></span></div><div class="smallprint palette-help">Elke combinatie bevat een achtergrondkleur, lijnkleur en accentkleur. Je kunt de kleuren eronder ook zelf aanpassen.</div><div class="colorrow"><label class="colorslot">Achtergrond<input aria-label="Achtergrondkleur" id="bgColor" type="color" value="#0d0e10"></label><label class="colorslot">Lijnen<input aria-label="Lijnkleur" id="fgColor" type="color" value="#e6e9e4"></label><label class="colorslot">Accent<input aria-label="Accentkleur" id="accentColor" type="color" value="#b4c5bb"></label></div><div class="divider"></div><div class="groupname">Performance</div><div class="micline"><span>Microfoon-reactiviteit</span><button class="btn tiny" id="micBtn">Activeer</button></div><div class="wavebar"><span id="level"></span></div><div class="smallprint">Optioneel: reageert op het geluidsniveau. Toestemming voor microfoon vereist, bij voorkeur via HTTPS.</div><div class="divider"></div><div class="groupname">Beeld als bron</div><label class="upload">+ Upload een foto voor Prism Studies<input type="file" id="photo" accept="image/png,image/jpeg,image/webp"></label><div class="smallprint" id="photoHint">Gebruik je eigen foto in een gespiegeld radiaal patroon. De foto blijft op je apparaat.</div><div class="divider"></div><div class="groupname">Poster</div><label class="checkline"><input type="checkbox" id="posterToggle"> Toon typografische overlay</label><div id="posterFields" class="hide"><div class="control"><div class="controlhead"><label for="titleInput">Titel</label></div><input id="titleInput" value="LIGHT FORMS" style="width:100%;padding:9px;background:#212427;border:1px solid #45494e;border-radius:4px;color:white"></div><div class="control"><div class="controlhead"><label for="subtitleInput">Ondertitel</label></div><input id="subtitleInput" value="A live audiovisual study — 2026" style="width:100%;padding:9px;background:#212427;border:1px solid #45494e;border-radius:4px;color:white"></div></div><div class="divider"></div><div class="groupname">Exporteer</div><div class="exportrow"><button class="btn" id="svgDownload">↓ SVG</button><button class="btn" id="pngDownload">↓ PNG</button></div><div class="record-panel" id="recordPanel"><div class="record-panel-title"><span class="eyebrow">VIDEO-OPNAME</span><span class="record-panel-chip">Automatische instellingen</span></div><label for="recordDestination" class="destination-label">Waarvoor neem je op?</label><select id="recordDestination" class="video-select" aria-label="Kies het publicatiekanaal"><option value="youtube">YouTube · gewone video</option><option value="concert">Concert · liveprojectie</option><option value="instagram">Instagram · Reel</option><option value="tiktok">TikTok · video</option></select><div class="record-snapshot"><div class="record-frame-wrap"><div class="record-preview" id="recordPreview"><div class="record-preview-visual" id="recordPreviewArt"></div><div class="record-safe-guide" aria-hidden="true"></div></div><div class="record-frame-label">Voorbeeldkader</div></div><div class="record-specs" id="recordSpecs" aria-live="polite"></div></div><p class="record-compat" id="recordCompatibility" role="status"></p><button class="btn primary video-record-button" id="recordBtn">● &nbsp; Start video-opname</button><p class="smallprint video-hint" id="recordHelp">De app neemt alleen de animatie op, zonder bedieningsknoppen. Stop om te downloaden. Het tabblad moet open blijven. Er wordt geen geluid opgenomen.</p></div><div style="display:flex;gap:8px;margin-top:9px"><button class="btn" id="reset" style="flex:1">Herstel basis</button><button class="btn" id="copyConfig" style="flex:1">Kopieer settings</button></div><div class="notice" id="notice" role="status"></div><div class="divider"></div><div class="groupname">Bewaarde variaties</div><div class="presetlist" id="presets"></div><div class="smallprint">Variaties worden lokaal in deze browser opgeslagen.</div></aside>
+ </section>
+</main>
+<div class="footer"><span>SHAPES LAB 4 — independent generative experiments.</span><span>Vrijstaande studie, geen kopie of onderdeel van <a href="https://bookofshapes.com" target="_blank" rel="noreferrer">Book of Shapes</a>.</span></div>
+<script>
+(()=>{'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const patterns=[
+ {id:'prism',name:'Prism Studies',category:'radiaal',desc:'Reflecties, fragmenten en transparante lagen.',tag:'01 / MIRROR'},
+ {id:'contour',name:'Tidal Memory',category:'stroming',desc:'Een landschap van horizontale golfvormen.',tag:'02 / WAVES'},
+ {id:'orbit',name:'Orbit Letters',category:'radiaal',desc:'Roterende, licht verschillende ellipsbanen.',tag:'03 / ORBITS'},
+ {id:'mesh',name:'Quiet Lattice',category:'raster',desc:'Een vervormd netwerk van elkaar kruisende lijnen.',tag:'04 / MESH'},
+ {id:'dots',name:'Drift Atlas',category:'stroming',desc:'Een raster dat zachtjes uiteenwijkt in een stroomveld.',tag:'05 / PARTICLES'},
+ {id:'bloom',name:'Nocturne Bloom',category:'radiaal',desc:'Langzaam uitwaaierende, wiskundige bloembanen.',tag:'06 / ORGANIC'},
+ {id:'signal',name:'Interference',category:'stroming',desc:'Een interferentiepatroon van overlappende golven.',tag:'07 / SOUND'},
+ {id:'arc',name:'Arc Sequence',category:'raster',desc:'Een veld van segmenten met generatieve oriëntaties.',tag:'08 / SYSTEM'}
+];
+const palettes=[
+ {id:'chalk',name:'01 · Grafiet & krijt',bg:'#0d0e10',fg:'#e6e9e4',accent:'#b4c5bb'},
+ {id:'nocturne',name:'02 · Nachtblauw & salie',bg:'#101923',fg:'#e2e6dd',accent:'#819e98'},
+ {id:'ink',name:'03 · Inkt & koper',bg:'#172026',fg:'#e9d9c6',accent:'#bf8e67'},
+ {id:'plum',name:'04 · Pruim & mist',bg:'#211c27',fg:'#e8e2e8',accent:'#b39ab8'},
+ {id:'stone',name:'05 · Zandsteen',bg:'#e8dfd1',fg:'#343637',accent:'#a97562'},
+ {id:'fern',name:'06 · Bosgroen',bg:'#13241f',fg:'#dbe4d9',accent:'#9dbba4'},
+ {id:'dusk',name:'07 · Schemering',bg:'#202332',fg:'#e4e4ed',accent:'#929fc3'},
+ {id:'paper',name:'08 · Japans papier',bg:'#ece7dc',fg:'#242a2d',accent:'#a18a68'},
+ {id:'rust',name:'09 · Roest & leisteen',bg:'#222526',fg:'#e8e0d4',accent:'#ad7f6d'},
+ {id:'frost',name:'10 · IJsblauw',bg:'#15232d',fg:'#dcebee',accent:'#81b6c4'},
+ {id:'rose',name:'11 · Asroze',bg:'#ede5e2',fg:'#343036',accent:'#a8798a'},
+ {id:'mono',name:'12 · Zilvergrijs',bg:'#141518',fg:'#efefeb',accent:'#84898d'}
+];
+const defaults={density:45,energy:44,frequency:4,symmetry:8,stroke:1.2,speed:30,seed:26,bg:'#0d0e10',fg:'#e6e9e4',accent:'#b4c5bb'};
+function matchPalette(values){return palettes.find(p=>p.bg.toLowerCase()===values.bg?.toLowerCase()&&p.fg.toLowerCase()===values.fg?.toLowerCase()&&p.accent.toLowerCase()===values.accent?.toLowerCase())?.id||'custom'}
+function renderPalettePicker(){const selected=matchPalette(st);$('#paletteSelect').value=selected;const preview=$('#palettePreview').children;[st.bg,st.fg,st.accent].forEach((c,i)=>preview[i].style.backgroundColor=c);$('#visualshell').style.setProperty('--art-bg',st.bg);$('#recordPreview').style.background=st.bg}
+const controls=[['density','Dichtheid',8,90,1],['energy','Vervorming',0,100,1],['frequency','Frequentie',1,12,1],['symmetry','Symmetrie',3,18,1],['stroke','Lijndikte',0.4,4,0.1],['speed','Animatiesnelheid',0,100,1],['seed','Seed',0,999,1]];
+let st={...defaults},current='prism',playing=true,live=false,photoData=null,audioContext=null,analyser=null,micStream=null,level=0,clock=0,last=0,noticeTimeout,previewFilter='alles';
+let saved=[];try{saved=JSON.parse(localStorage.getItem('shapeslab-v1')||'[]')}catch(e){}
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));const fract=x=>x-Math.floor(x);const rand=n=>fract(Math.sin(n*127.1+st.seed*91.37)*43758.5453123);const fmt=n=>Number(n).toFixed(2);const PI=Math.PI;
+const colorAlpha=(c,a)=>{const r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);return `rgba(${r},${g},${b},${a})`};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const polar=(r,a)=>[400+Math.cos(a)*r,400+Math.sin(a)*r];
+const path=(pts,closed=false)=>'M'+pts.map(([x,y])=>`${fmt(x)},${fmt(y)}`).join(' L')+(closed?' Z':'');
+function renderSvg(type,opts,time=0,audio=0){
+ const p={...defaults,...opts}; const tt=time*(0.15+p.speed*.012), e=p.energy/100, d=p.density/100, freq=p.frequency, thick=p.stroke;
+ let art='',defs='',stroke=`fill="none" stroke="${p.fg}" stroke-width="${thick}" stroke-linecap="round" stroke-linejoin="round"`,special=`fill="none" stroke="${p.accent}" stroke-width="${thick}" stroke-linecap="round"`;
+ const trig=x=>Math.sin(x*12.9898+p.seed*.127);const noise=(x,y,t=0)=>Math.sin(x*.018*freq+Math.cos(y*.01+t))*.59+Math.cos(y*.013*freq-x*.008+t*.6)*.41;
+ if(type==='prism'){
+  const n=p.symmetry*2,angle=2*PI/n,half=angle/2;
+  // A circular radial boundary means no prism slices disappear beyond the canvas edge.
+  const prismRadius=440,a1=polar(prismRadius,-PI/2-half),a2=polar(prismRadius,-PI/2+half);
+  defs+=`<clipPath id="wedge"><path d="M400 400 L${fmt(a1[0])} ${fmt(a1[1])} A${prismRadius} ${prismRadius} 0 0 1 ${fmt(a2[0])} ${fmt(a2[1])} Z"/></clipPath>`;
+  let base='';
+  if(photoData){const shift=Math.sin(tt)*70*e;defs+=`<image id="photoSource" href="${photoData}" x="${-90+shift}" y="${-80+shift}" width="980" height="980" preserveAspectRatio="xMidYMid slice" opacity="0.97"/>`;base=`<use href="#photoSource"/>`}
+  else{
+   const rings=Math.round(8+d*20);
+   for(let k=0;k<rings;k++){
+    const r=22+k*(318/Math.max(1,rings-1))+(p.seed%11)*.3,theta=-PI/2+Math.sin(k*1.4+p.seed)*half*.9+Math.sin(tt+k*.3)*half*e;
+    const pt=polar(r,theta),rr=12+e*40+(k%5)*5;
+    base+=`<circle cx="${fmt(pt[0])}" cy="${fmt(pt[1])}" r="${fmt(rr)}" ${k%5===0?special:stroke} opacity="${fmt(.28+(k%5)*.12)}"/>`;
+    const a=polar(r+rr,theta-half*.25),b=polar(r-rr,theta+half*.35);
+    base+=`<path d="${path([a,b])}" ${k%4===0?special:stroke} opacity=".48"/>`;
+   }
+   for(let k=0;k<5;k++){const a=polar(60+k*63,-PI/2+half*.28),b=polar(420,-PI/2+half*(.08+k*.1));base+=`<path d="${path([a,b])}" ${special} opacity=".22"/>`}
+  }
+  for(let i=0;i<n;i++){
+   const deg=i*360/n;art+=`<g transform="translate(400 400) rotate(${fmt(deg)}) ${i%2?'scale(-1 1)':''} translate(-400 -400)"><g clip-path="url(#wedge)">${base}</g></g>`;
+  }
+  art+=`<circle cx="400" cy="400" r="${fmt(5+audio*25)}" fill="${p.accent}" opacity=".65"/>`;
+ }
+ if(type==='contour'){
+  const count=Math.round(18+d*62),amp=e*(34+audio*110),pts=120;
+  for(let row=0;row<count;row++){const y=85+row*630/Math.max(1,count-1),arr=[];
+   for(let j=0;j<=pts;j++){const x=40+j*720/pts,env=Math.pow(Math.max(0,1-Math.abs(x-400)/440),2);let yy=y+amp*env*(Math.sin(x*.008*freq+row*.14+tt*.9)+.35*Math.sin(x*.018*freq-row*.19-tt*.7));arr.push([x,yy])}
+   art+=`<path d="${path(arr)}" ${row%9===0?special:stroke} opacity="${fmt(.25+row/count*.62)}"/>`;
+  }
+ }
+ if(type==='orbit'){
+  const count=Math.round(12+d*50),elongation=0.18+e*.77;
+  for(let i=0;i<count;i++){
+   const r=22+i*345/count,turn=(i*137.5+tt*16+e*42)%360;
+   const rx=r,ry=r*(.3+elongation*.7), opacity=.14+.75*i/count;
+   art+=`<ellipse cx="400" cy="400" rx="${fmt(rx)}" ry="${fmt(ry)}" transform="rotate(${fmt(turn)} 400 400)" ${i%11===0?special:stroke} opacity="${fmt(opacity)}"/>`;
+  }
+  for(let i=0;i<14;i++){const a=2*PI*i/14+tt*.23,pp=polar(220+Math.sin(i*7+p.seed)*e*85,a);art+=`<circle cx="${fmt(pp[0])}" cy="${fmt(pp[1])}" r="${fmt(1+thick)}" fill="${p.accent}" opacity=".67"/>`}
+ }
+ if(type==='mesh'){
+  const count=Math.round(10+d*36),gap=690/count,amp=e*78;
+  const pos=(ix,iy)=>{const x=55+ix*gap,y=55+iy*gap;return [x+amp*Math.sin(y*.014*freq+tt*.5+Math.sin(ix*.8)),y+amp*Math.cos(x*.014*freq+tt*.7+iy*.1)]};
+  for(let i=0;i<=count;i++){
+   let h=[],v=[];for(let j=0;j<=count;j++){h.push(pos(j,i));v.push(pos(i,j))}
+   art+=`<path d="${path(h)}" ${i%7===0?special:stroke} opacity=".58"/><path d="${path(v)}" ${i%7===0?special:stroke} opacity=".58"/>`;
+  }
+ }
+ if(type==='dots'){
+  const cols=Math.round(14+d*45),rows=Math.round(14+d*45);let dots=[];
+  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
+   const xx=45+710*x/(cols-1),yy=45+710*y/(rows-1),a=Math.sin(y*.2*freq+tt*.33)*e*82+Math.cos(x*.11*freq+tt)*e*45;
+   const px=xx+a*Math.sin((yy/800)*PI),py=yy+e*49*Math.sin(xx*.012*freq+tt*.4);
+   const rad=(0.8+thick*.6)*(1+audio*1.8)*(1+(.25*Math.sin(x*.8+y*.9+tt)));
+   dots.push(`<circle cx="${fmt(px)}" cy="${fmt(py)}" r="${fmt(rad)}" fill="${(x+y)%13===0?p.accent:p.fg}" opacity="${fmt(.22+.74*y/rows)}"/>`)
+  }art=dots.join('');
+ }
+ if(type==='bloom'){
+  const count=Math.round(8+d*28),petals=p.symmetry/2+freq*.24;
+  for(let layer=0;layer<count;layer++){
+   const arr=[],base=85+layer*230/count;
+   for(let i=0;i<=400;i++){
+    const a=2*PI*i/400,r=base+Math.sin(a*petals+tt*.5+layer*.13)*(15+e*120)+Math.sin(a*(petals+2)-tt*.26)*(e*18),pt=polar(r,a+layer*.019);
+    arr.push(pt);
+   }
+   art+=`<path d="${path(arr,true)}" ${layer%8===0?special:stroke} opacity="${fmt(.24+.63*layer/count)}"/>`;
+  }
+ }
+ if(type==='signal'){
+  const count=Math.round(18+d*65),amp=10+e*95+audio*90;
+  for(let row=0;row<count;row++){
+   const y=80+row*640/(count-1),arr=[];
+   for(let i=0;i<=120;i++){
+    const x=30+i*740/120,v=amp*(Math.sin(x*.014*freq+tt*.8+row*.075)*.58+Math.cos(x*.022*(freq+1)-tt*.4-row*.12)*.42),env=Math.sin(PI*(x-30)/740)**2;
+    arr.push([x,y+v*env]);
+   }
+   art+=`<path d="${path(arr)}" ${row%12===0?special:stroke} opacity="${fmt(.18+.58*row/count)}"/>`;
+  }
+ }
+ if(type==='arc'){
+  const cols=Math.round(6+d*19),cell=690/cols;
+  for(let y=0;y<cols;y++)for(let x=0;x<cols;x++){
+   const cx=55+(x+.5)*cell,cy=55+(y+.5)*cell,phase=fract(Math.sin(x*13.9+y*79.17+p.seed*3.1)*43758.57);
+   const rot=phase>.5?0:90,depth=Math.round(1+e*5);for(let k=0;k<depth;k++){
+    const r=cell*(.21+k*.15),start=(rot)*PI/180+tt*.15;
+    let pts=[];for(let s=0;s<=16;s++){const a=start+s*PI/2/16;pts.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r])}
+    art+=`<path d="${path(pts)}" ${k===0?special:stroke} opacity="${fmt(.25+.62*phase)}"/>`;
+   }
+  }
+ }
+ // Even with maximum distortion the complete design has breathing room in every direction.
+ const framing=125,side=800+framing*2;
+ const safeBody=`<rect x="${-framing}" y="${-framing}" width="${side}" height="${side}" fill="${p.bg}"/>`+art;
+ return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${side}" height="${side}" viewBox="${-framing} ${-framing} ${side} ${side}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Generatief patroon ${esc(type)}"><defs>${defs}</defs>${safeBody}</svg>`;
+}
+function notify(message){const e=$('#notice');e.textContent=message;e.classList.add('show');clearTimeout(noticeTimeout);noticeTimeout=setTimeout(()=>e.classList.remove('show'),4400)}
+function buildGallery(){const picked=previewFilter==='favoriet'?saved.map(x=>x.pattern):patterns.filter(p=>previewFilter==='alles'||p.category===previewFilter).map(p=>p.id);
+ const tiles=$('#tiles');if(!picked.length){tiles.innerHTML='<p style="color:#9fa5a9">Je hebt nog geen variaties bewaard.</p>';return}
+ tiles.innerHTML=picked.map((id,i)=>{const pat=patterns.find(x=>x.id===id);if(!pat)return '';const preset=previewFilter==='favoriet'?saved[i]:null;let params=preset?{...defaults,...preset.values}:{...defaults,seed:16+i*53,density:40+i%4*7,energy:31+i%3*14};const svg=renderSvg(id,params,0);return `<button class="tile" data-pattern="${pat.id}" data-saved="${preset?i:''}"><div class="art">${svg}</div><footer><div><b>${esc(pat.name)}</b><br><small>${preset?'BEWAARDE VARIATIE':pat.tag}</small></div><span class="arrow">↗</span></footer></button>`}).join('');
+ tiles.querySelectorAll('.tile').forEach(el=>el.onclick=()=>{const idx=el.getAttribute('data-saved');if(idx!==''){st={...defaults,...saved[+idx].values}}else{st={...defaults}};openPattern(el.dataset.pattern)});
+}
+function renderControls(){const relevant=controls.filter(([key])=>!(key==='symmetry'&&!['prism','bloom'].includes(current)));
+ $('#sliders').innerHTML=relevant.map(([key,label,min,max,step])=>`<div class="control"><div class="controlhead"><label for="c_${key}">${label}</label><span class="num" id="v_${key}">${st[key]}</span></div><input type="range" id="c_${key}" min="${min}" max="${max}" step="${step}" value="${st[key]}"></div>`).join('');
+ relevant.forEach(([key])=>{const inp=$('#c_'+key);inp.oninput=()=>{st[key]=+inp.value;$('#v_'+key).textContent=inp.value;draw(clock)}});
+ $('#bgColor').value=st.bg;$('#fgColor').value=st.fg;$('#accentColor').value=st.accent;renderPalettePicker();
+ $('#photoHint').textContent=current==='prism'?'Upload een foto om een eigen kaleidoscoop te maken. De foto blijft lokaal.':'Je foto wordt gebruikt zodra je Prism Studies opent.';
+}
+function openPattern(id){if(!patterns.some(x=>x.id===id))id='prism';current=id;live=false;document.body.classList.add('editing');document.body.classList.remove('live');$('#navGallery').classList.remove('active');$('#navStudio').classList.add('active');const pat=patterns.find(x=>x.id===id);$('#patternTitle').textContent=pat.name;$('#patternDesc').textContent=pat.desc;renderControls();renderPresets();draw(clock);window.scrollTo(0,0);document.title=pat.name+' — SHAPES LAB'}
+function toGallery(){if(recording?.active)stopRecording();live=false;document.body.classList.remove('editing','live');$('#navGallery').classList.add('active');$('#navStudio').classList.remove('active');buildGallery();document.title='SHAPES LAB — Generatieve visuals';window.scrollTo(0,0)}
+let previewFrames=0;function draw(t){const svg=renderSvg(current,st,t,level);$('#visual').innerHTML=svg;if(++previewFrames%10===0||previewFrames===1)$('#recordPreviewArt').innerHTML=svg;renderPalettePicker();updateFullBleed();if(recording?.active)queueVideoFrame(recording,svg);$('#poster').style.setProperty('--posterink',st.fg);$('#posterText').innerHTML=esc($('#titleInput').value).replace(/\s+/g,'<br>');$('#posterSub').textContent=$('#subtitleInput').value}
+function tick(ts){if(playing&&document.body.classList.contains('editing')&&ts-last>=1000/(recording?.active?recording.preset.fps:24)){let dt=Math.min(.06,(ts-last)/1000||0.03);last=ts;clock+=dt;if(analyser){const values=new Uint8Array(analyser.fftSize);analyser.getByteTimeDomainData(values);let rms=0;for(const v of values){const n=(v-128)/128;rms+=n*n}rms=Math.sqrt(rms/values.length);level=level*.73+Math.min(1,rms*4)*.27;$('#level').style.width=(level*100)+'%'}draw(clock)}updateRecordClock();requestAnimationFrame(tick)}
+function updateFullBleed(){const node=$('#visual svg');if(node)node.setAttribute('preserveAspectRatio','xMidYMid meet')}
+function setPlaying(v){playing=v;$('#playBtn').textContent=playing?'Ⅱ  Pauze':'▶  Afspelen';$('#statusDot').classList.toggle('on',playing);$('#stateText').textContent=playing?'Animatie actief':'Animatie gepauzeerd';if(!playing)draw(clock)}
+function toggleLive(){if(!document.body.classList.contains('editing'))openPattern(current);live=!live;document.body.classList.toggle('live',live);$('#navLive').textContent=live?'✕  Editor tonen':'◉  Live modus';if(live){setPlaying(true)}else{draw(clock)}}
+function save(){saved.unshift({pattern:current,values:{...st},date:new Date().toISOString()});saved=saved.slice(0,18);try{localStorage.setItem('shapeslab-v1',JSON.stringify(saved))}catch(e){}renderPresets();notify('Variatie bewaard op dit apparaat.')}
+function renderPresets(){let cur=saved.filter(x=>x.pattern===current);$('#presets').innerHTML=cur.length?cur.map((x,i)=>`<button class="preset" data-i="${i}">Variatie ${i+1} · ${x.values.seed}</button>`).join(''):'<span style="color:#717880;font-size:11px">Nog geen variaties voor dit patroon.</span>';
+ $('#presets').querySelectorAll('[data-i]').forEach(el=>el.onclick=()=>{st={...defaults,...cur[+el.dataset.i].values};renderControls();draw(clock);notify('Variatie geladen.')});}
+function blobDownload(blob,name,hold=2500){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),hold)}
+function exportSvg(){const svg=renderSvg(current,st,clock,level);blobDownload(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),'shapes-'+current+'-'+st.seed+'.svg');notify('SVG geëxporteerd. De postertekst zit niet in de SVG.')} 
+function exportPng(){const svg=renderSvg(current,st,clock,level),blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob);const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=1600;const cx=c.getContext('2d');cx.drawImage(im,0,0,1600,1600);URL.revokeObjectURL(url);
+ if($('#posterToggle').checked){cx.fillStyle=st.fg;cx.font='23px system-ui, sans-serif';cx.fillText('SHAPES / EXPERIMENTAL STUDIES',120,155);cx.font='bold 116px system-ui,sans-serif';cx.fillText($('#titleInput').value.toUpperCase().slice(0,22),110,1390);cx.fillRect(110,1450,1380,2);cx.font='22px system-ui,sans-serif';cx.fillText($('#subtitleInput').value.slice(0,80),115,1490)}
+ c.toBlob(out=>{if(out){blobDownload(out,'shapes-'+current+'-'+st.seed+'.png');notify('PNG op 1600 × 1600 geëxporteerd.')}else notify('PNG-export mislukt. Probeer SVG.')},'image/png')};im.onerror=()=>{URL.revokeObjectURL(url);notify('PNG niet beschikbaar voor deze afbeelding. SVG-export werkt wel.')};im.src=url}
+async function micToggle(){if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null;analyser=null;level=0;$('#micBtn').textContent='Activeer';$('#level').style.width='0%';notify('Microfoon uitgeschakeld.');return}
+ try{if(!navigator.mediaDevices?.getUserMedia)throw new Error('Toegang tot de microfoon is hier niet beschikbaar. Open de site via HTTPS.');micStream=await navigator.mediaDevices.getUserMedia({audio:true});audioContext=new (window.AudioContext||window.webkitAudioContext)();const src=audioContext.createMediaStreamSource(micStream);analyser=audioContext.createAnalyser();analyser.fftSize=512;src.connect(analyser);$('#micBtn').textContent='Stop';notify('Microfoon actief: visuals reageren op geluidssterkte.')}catch(err){notify(err.message||'Microfoontoegang geweigerd.')}}
+// Native recording: SVG -> Canvas.captureStream -> MediaRecorder. No upload; no external server.
+// Each destination chooses a proper output size, aspect, fps, quality, and filename.
+const recordingPresets={
+ youtube:{id:'youtube',title:'YouTube',width:1920,height:1080,ratio:'16:9',orientation:'Liggend',fps:30,bitrate:8000000,margin:.048,topSafe:.05,bottomSafe:.05},
+ concert:{id:'concert',title:'Concert',width:1920,height:1080,ratio:'16:9',orientation:'Liggend',fps:30,bitrate:12000000,margin:.065,topSafe:.05,bottomSafe:.05},
+ instagram:{id:'instagram',title:'Instagram Reel',width:1080,height:1920,ratio:'9:16',orientation:'Staand',fps:30,bitrate:8000000,margin:.07,topSafe:.14,bottomSafe:.21},
+ tiktok:{id:'tiktok',title:'TikTok',width:1080,height:1920,ratio:'9:16',orientation:'Staand',fps:30,bitrate:8000000,margin:.07,topSafe:.14,bottomSafe:.21}
+};
+let recording=null,recordStarting=false;
+function chosenPreset(){return recordingPresets[$('#recordDestination').value]||recordingPresets.youtube}
+function supportedVideoMime(){if(!window.MediaRecorder)return '';const candidates=['video/mp4;codecs=avc1.42E01E','video/mp4;codecs=avc1.640028','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];return candidates.find(m=>MediaRecorder.isTypeSupported?.(m))||''}
+function actualFormat(mime){return /mp4/i.test(mime)?'MP4 · H.264 (indien beschikbaar)':/webm/i.test(mime)?'WebM · VP8/VP9':'Browserformaat'}
+function updateDestinationUI(){
+ const preset=chosenPreset(),mime=supportedVideoMime(),mp4=/mp4/i.test(mime),notSupported=!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream;
+ $('#recordPreview').dataset.orientation=preset.width>preset.height?'landscape':'portrait';
+ $('#recordPreview').style.background=st.bg;
+ $('#recordSpecs').innerHTML=`<div><span class="spec-label">Richting</span><br><b>${preset.orientation} · ${preset.ratio}</b></div><div><span class="spec-label">Resolutie</span><br><b>${preset.width} × ${preset.height}</b></div><div><span class="spec-label">Opname</span><br><b>${preset.fps} fps · ${Math.round(preset.bitrate/1e6)} Mbps</b></div><div><span class="spec-label">Download</span><br><b>${mp4?'MP4 / H.264':'WebM'}</b></div>`;
+ const message=notSupported?'Deze browser ondersteunt geen lokale video-opname. Probeer Chrome, Edge of Safari.':mp4?'MP4 beschikbaar in deze browser. Klaar voor export naar '+preset.title+'.':'Deze browser kan niet rechtstreeks als MP4 opnemen: de app downloadt WebM. Converteer indien nodig naar MP4 (H.264) vóór publicatie.';
+ $('#recordCompatibility').textContent=message;$('#recordCompatibility').classList.toggle('warn',!mp4||notSupported);
+ $('#recordFloatDestination').textContent=preset.title;
+ $('#recordHelp').textContent=preset.width>preset.height?'Alleen de visual wordt opgenomen, zonder bediening of audio. Het beeld blijft binnen veilige marges. Houd dit tabblad open.':'Alleen de visual wordt opgenomen. De compositie blijft binnen het verticale opnamekader, met extra ruimte voor app-knoppen. Zonder audio; houd het tabblad open.';
+}
+function setRecordUI(){const active=!!recording?.active||recordStarting,disabling=active||recording?.stopping;
+ document.body.classList.toggle('recording-active',active);
+ const label=active?'■  Stop opname':'●  Opnemen';$('#recordTop').textContent=label;$('#recordFloatBtn').textContent=label;
+ $('#recordBtn').textContent=active?'■  Stop opname & download':'●  Start video-opname';$('#recordDestination').disabled=!!disabling;
+ if(!active)$('#recordTime').textContent='00:00';
+}
+function updateRecordClock(){if(!recording?.active)return;const sec=Math.floor((performance.now()-recording.startedAt)/1000),m=String(Math.floor(sec/60)).padStart(2,'0'),s=String(sec%60).padStart(2,'0');$('#recordTime').textContent=m+':'+s}
+function canvasPoster(session){
+ if(!$('#posterToggle').checked)return;
+ const c=session.ctx,w=session.canvas.width,h=session.canvas.height,min=Math.min(w,h),preset=session.preset,margin=min*.08;
+ const top=Math.max(margin,h*preset.topSafe),bottom=h*(1-preset.bottomSafe);
+ c.save();c.fillStyle=st.fg;
+ c.font=`${Math.round(min*.017)}px system-ui, sans-serif`;c.textBaseline='top';c.fillText('SHAPES / EXPERIMENTAL STUDIES',margin,top,w-2*margin);
+ const title=$('#titleInput').value.toUpperCase().trim().slice(0,30);
+ c.font=`500 ${Math.round(min*.068)}px system-ui, sans-serif`;c.textBaseline='bottom';c.fillText(title,margin,bottom-margin*.5,w-margin*2);
+ c.globalAlpha=.65;c.fillRect(margin,bottom-margin*.43,w-margin*2,2);
+ c.font=`${Math.round(min*.017)}px system-ui, sans-serif`;c.fillText($('#subtitleInput').value.slice(0,90),margin,bottom-margin*.15,w-2*margin);c.restore();
+}
+function paintVideoFrame(session,svg){
+ if(session.busy||session.stopping)return Promise.resolve(false);session.busy=true;
+ return new Promise((resolve,reject)=>{
+  const image=new Image(),blobUrl=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));let settled=false;
+  const cleanup=()=>{if(settled)return;settled=true;session.busy=false;image.onload=null;image.onerror=null;URL.revokeObjectURL(blobUrl)};
+  image.onload=()=>{try{
+   if(session.stopping){cleanup();resolve(false);return}
+   const w=session.canvas.width,h=session.canvas.height,ctx=session.ctx,preset=session.preset;
+   const pad=w*preset.margin;
+   // Portrait-safe upper/lower no-text zones: the artwork fits entirely and is vertically balanced.
+   const top=h*preset.topSafe,bottom=h*(1-preset.bottomSafe),usableH=bottom-top;
+   const dim=Math.max(1,Math.min(w-2*pad,usableH-2*pad));
+   const x=(w-dim)/2,y=top+(usableH-dim)/2;
+   ctx.fillStyle=st.bg;ctx.fillRect(0,0,w,h);ctx.drawImage(image,x,y,dim,dim);
+   canvasPoster(session);cleanup();resolve(true);
+  }catch(err){cleanup();reject(err)}};
+  image.onerror=()=>{cleanup();reject(new Error('De visual kon niet naar video worden omgezet.'))};image.src=blobUrl;
+ });
+}
+function queueVideoFrame(session,svg){if(session.busy||session.stopping)return;paintVideoFrame(session,svg).catch(err=>{notify('Opnamefout: '+err.message);stopRecording()})}
+async function startRecording(){
+ if(recordStarting||recording)return;
+ if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){notify('Video-opname wordt niet ondersteund. Gebruik Safari, Chrome of Edge.');return}
+ recordStarting=true;setRecordUI();let session=null;
+ try{
+  const preset={...chosenPreset()},canvas=document.createElement('canvas');canvas.width=preset.width;canvas.height=preset.height;
+  const ctx=canvas.getContext('2d',{alpha:false});if(!ctx)throw new Error('Canvas kon niet worden gestart.');
+  const stream=canvas.captureStream(preset.fps),mime=supportedVideoMime(),options={videoBitsPerSecond:preset.bitrate};if(mime)options.mimeType=mime;
+  const recorder=new MediaRecorder(stream,options);
+  session={preset,canvas,ctx,stream,recorder,chunks:[],startedAt:0,active:false,stopping:false,busy:false,pattern:current,seed:st.seed};recording=session;
+  recorder.ondataavailable=e=>{if(e.data?.size>0)session.chunks.push(e.data)};
+  recorder.onerror=()=>{notify('Opnamefout van de browser.');if(recording===session)stopRecording()};
+  recorder.onstop=()=>{
+   session.stream.getTracks().forEach(t=>t.stop());if(recording===session)recording=null;recordStarting=false;
+   setRecordUI();updateDestinationUI();
+   const actualMime=recorder.mimeType||mime||'video/webm',blob=new Blob(session.chunks,{type:actualMime});
+   if(blob.size>0){const ext=actualMime.includes('mp4')?'mp4':'webm';
+    blobDownload(blob,`shapes-${session.preset.id}-${session.pattern}-${session.seed}-${Date.now()}.${ext}`,60000);
+    notify('Video voor '+session.preset.title+' gedownload: '+session.preset.width+'×'+session.preset.height+' ('+(blob.size/1024/1024).toFixed(1)+' MB, '+ext.toUpperCase()+').');
+   }else notify('De browser leverde geen video op. Probeer een andere browser.');
+  };
+  await paintVideoFrame(session,renderSvg(current,st,clock,level));if(session.stopping)return;
+  recorder.start(1000);session.active=true;session.startedAt=performance.now();recordStarting=false;setRecordUI();setPlaying(true);
+  notify('Opname voor '+preset.title+' gestart · '+preset.ratio+' · '+preset.width+'×'+preset.height+' · '+preset.fps+' fps.');
+ }catch(err){
+  if(session){session.stopping=true;session.stream?.getTracks().forEach(t=>t.stop());if(recording===session)recording=null}
+  recordStarting=false;setRecordUI();notify('Video-opname niet gestart: '+(err.message||'onbekende fout'));
+ }
+}
+function stopRecording(){
+ if(recordStarting&&!recording?.active){notify('De videorecorder start nog. Probeer zo meteen opnieuw.');return}
+ const session=recording;if(!session||session.stopping)return;session.stopping=true;session.active=false;updateRecordClock();
+ ['#recordTop','#recordBtn','#recordFloatBtn'].forEach(sel=>$(sel).disabled=true);
+ try{if(session.recorder.state!=='inactive')session.recorder.stop();else session.recorder.onstop?.()}
+ catch(err){session.stream.getTracks().forEach(t=>t.stop());recording=null;recordStarting=false;setRecordUI();notify('Kon de opname niet afronden.')}
+ finally{setTimeout(()=>['#recordTop','#recordBtn','#recordFloatBtn'].forEach(sel=>$(sel).disabled=false),700)}
+}
+function toggleRecording(){if(recording?.active||recording?.stopping)stopRecording();else startRecording()}
+$('#recordTop').onclick=toggleRecording;$('#recordBtn').onclick=toggleRecording;$('#recordFloatBtn').onclick=toggleRecording;
+try{const lastDestination=localStorage.getItem('shapeslab-video-destination');if(recordingPresets[lastDestination])$('#recordDestination').value=lastDestination}catch(e){}
+$('#recordDestination').onchange=()=>{try{localStorage.setItem('shapeslab-video-destination',$('#recordDestination').value)}catch(e){}updateDestinationUI()};
+
+$('#begin').onclick=()=>openPattern(current);$('#navStudio').onclick=()=>openPattern(current);$('#home').onclick=e=>{e.preventDefault();toGallery()};$('#navGallery').onclick=toGallery;$('#back').onclick=toGallery;$('#scrollGallery').onclick=()=>$('#gallery').scrollIntoView({behavior:'smooth'});$('#navLive').onclick=toggleLive;
+$('#playBtn').onclick=()=>setPlaying(!playing);$('#fullscreen').onclick=async()=>{const v=$('#visualshell');try{if(document.fullscreenElement||document.webkitFullscreenElement){if(document.exitFullscreen)await document.exitFullscreen();else document.webkitExitFullscreen?.()}else if(v.requestFullscreen){await v.requestFullscreen()}else v.webkitRequestFullscreen?.()}catch(e){notify('Volledig scherm is niet beschikbaar in deze browser.')}updateFullBleed()};
+['fullscreenchange','webkitfullscreenchange'].forEach(event=>document.addEventListener(event,updateFullBleed));
+
+$('#shuffle').onclick=()=>{st.seed=Math.floor(Math.random()*999);st.energy=Math.floor(15+Math.random()*85);st.density=Math.floor(15+Math.random()*74);st.frequency=Math.floor(1+Math.random()*11);st.symmetry=Math.floor(3+Math.random()*15);renderControls();draw(clock)};
+$('#saveVariation').onclick=save;$('#svgDownload').onclick=exportSvg;$('#pngDownload').onclick=exportPng;$('#micBtn').onclick=micToggle;
+$('#reset').onclick=()=>{st={...defaults};photoData=null;$('#photo').value='';renderControls();draw(clock);notify('Basisinstellingen hersteld.')};
+$('#copyConfig').onclick=async()=>{const data=JSON.stringify({pattern:current,...st},null,2);try{await navigator.clipboard.writeText(data);notify('Configuratie gekopieerd.')}catch(e){const t=document.createElement('textarea');t.value=data;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();notify('Configuratie gekopieerd.')}};
+$('#paletteSelect').innerHTML=palettes.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')+'<option value="custom">Eigen kleuren</option>';
+$('#paletteSelect').onchange=e=>{const preset=palettes.find(p=>p.id===e.target.value);if(!preset)return;st.bg=preset.bg;st.fg=preset.fg;st.accent=preset.accent;renderControls();draw(clock)};
+[['bgColor','bg'],['fgColor','fg'],['accentColor','accent']].forEach(([id,key])=>{$('#'+id).oninput=e=>{st[key]=e.target.value;draw(clock)}});
+$('#photo').onchange=e=>{const f=e.target.files?.[0];if(!f)return;if(f.size>8e6){notify('Gebruik een foto kleiner dan 8 MB.');return}if(!['image/png','image/jpeg','image/webp'].includes(f.type)){notify('Kies een JPG-, PNG- of WebP-foto.');return}const reader=new FileReader();reader.onload=()=>{photoData=reader.result;if(current!=='prism'){current='prism';openPattern('prism')}else draw(clock);notify('Foto ingeladen. De spiegeling gebruikt je eigen beeld.');};reader.readAsDataURL(f)};
+$('#posterToggle').onchange=e=>{$('#visualshell').classList.toggle('poster-on',e.target.checked);$('#posterFields').classList.toggle('hide',!e.target.checked);draw(clock)};$('#titleInput').oninput=()=>draw(clock);$('#subtitleInput').oninput=()=>draw(clock);
+$('#filters').querySelectorAll('[data-filter]').forEach(el=>el.onclick=()=>{$('#filters').querySelectorAll('button').forEach(b=>b.classList.remove('active'));el.classList.add('active');previewFilter=el.dataset.filter;buildGallery()});
+window.addEventListener('keydown',e=>{const tag=document.activeElement?.tagName;if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return;if(!document.body.classList.contains('editing'))return;if(e.key===' '){e.preventDefault();setPlaying(!playing)}if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const i=patterns.findIndex(x=>x.id===current);openPattern(patterns[(i+(e.key==='ArrowRight'?1:-1)+patterns.length)%patterns.length].id)}if(e.key==='Escape'&&live){toggleLive()}});
+window.addEventListener('beforeunload',()=>{micStream?.getTracks().forEach(t=>t.stop());recording?.stream?.getTracks().forEach(t=>t.stop())});buildGallery();renderControls();renderPresets();updateDestinationUI();setRecordUI();requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
