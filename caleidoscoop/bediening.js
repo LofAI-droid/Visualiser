@@ -156,7 +156,7 @@
       try { q[part.slice(0, i)] = decodeURIComponent(part.slice(i + 1)); } catch (e) { /* ongeldig */ }
     });
     var v;
-    v = num(q.s); if (isFinite(v) && v >= 0) out.seed = Math.floor(Math.min(v, MAX_SEED));
+    v = num(q.s); if (isFinite(v) && v >= 1) out.seed = Math.floor(Math.min(v, MAX_SEED));
     v = num(q.n); if (isFinite(v)) out.segments = evenSeg(v);
     v = num(q.c); if (isFinite(v)) out.complexity = Math.round(lim('complexity', v));
     v = num(q.t); if (isFinite(v)) out.speed = lim('speed', v);
@@ -296,7 +296,7 @@
     seedInp.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         var v = Number(seedInp.value.trim());
-        if (seedInp.value.trim() !== '' && isFinite(v) && v >= 0) {
+        if (seedInp.value.trim() !== '' && isFinite(v) && v >= 1) {
           set({ seed: Math.floor(Math.min(v, MAX_SEED)) });
         } else {
           seedInp.value = S().seed;
