@@ -200,7 +200,18 @@ const palettes=[
  {id:'cobalt',name:'19 · Kobalt op papier',bg:'#f7f9ff',fg:'#0b1030',accent:'#1f4bff'},
  {id:'laser',name:'20 · Laserviolet',bg:'#0c0716',fg:'#f3edff',accent:'#b26bff'},
  {id:'tropic',name:'21 · Tropisch',bg:'#003b3a',fg:'#fdfcf2',accent:'#ffd60a'},
- {id:'alarm',name:'22 · Zwart & signaalrood',bg:'#000000',fg:'#ffffff',accent:'#ff3047'}
+ {id:'alarm',name:'22 · Zwart & signaalrood',bg:'#000000',fg:'#ffffff',accent:'#ff3047'},
+ // Lichte achtergronden: donkere lijnen (≥ 12:1) en een verzadigd accent (≥ 4,5:1)
+ {id:'linen',name:'23 · Linnen & oranje',bg:'#f4efe6',fg:'#1d1f24',accent:'#c2410c'},
+ {id:'mint',name:'24 · Munt & woud',bg:'#e3f4ec',fg:'#0f2e24',accent:'#0b7d55'},
+ {id:'lavender',name:'25 · Lavendel & violet',bg:'#ece8fb',fg:'#221a45',accent:'#6d3fe0'},
+ {id:'peach',name:'26 · Perzik & vermiljoen',bg:'#ffe5d4',fg:'#3a1d12',accent:'#bd2810'},
+ {id:'sky',name:'27 · Hemelsblauw',bg:'#dceefe',fg:'#0b2545',accent:'#0a62c4'},
+ {id:'lemon',name:'28 · Citroen & fuchsia',bg:'#fff6c7',fg:'#2b2402',accent:'#c2185b'},
+ {id:'powder',name:'29 · Poederroze & bordeaux',bg:'#fde4ec',fg:'#3d0f22',accent:'#b8124f'},
+ {id:'sage',name:'30 · Salie & terracotta',bg:'#e2eadb',fg:'#1f2a1b',accent:'#a8441a'},
+ {id:'concrete',name:'31 · Lichtgrijs & kobalt',bg:'#e6e7e9',fg:'#15171a',accent:'#0050e6'},
+ {id:'dune',name:'32 · Duin & turkoois',bg:'#f3e3c3',fg:'#2a1e0c',accent:'#00726d'}
 ];
 const defaults={density:45,energy:44,frequency:4,symmetry:8,stroke:1.2,speed:30,seed:26,bg:'#0d0e10',fg:'#e6e9e4',accent:'#b4c5bb'};
 function matchPalette(values){return palettes.find(p=>p.bg.toLowerCase()===values.bg?.toLowerCase()&&p.fg.toLowerCase()===values.fg?.toLowerCase()&&p.accent.toLowerCase()===values.accent?.toLowerCase())?.id||'custom'}
@@ -209,6 +220,7 @@ const controls=[['density','Dichtheid',8,90,1],['energy','Vervorming',0,100,1],[
 let st={...defaults},current='prism',playing=true,live=false,photoData=null,audioContext=null,analyser=null,micStream=null,level=0,clock=0,last=0,noticeTimeout,previewFilter='alles';
 let saved=[];try{saved=JSON.parse(localStorage.getItem('shapeslab-v1')||'[]')}catch(e){}
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));const fract=x=>x-Math.floor(x);const rand=n=>fract(Math.sin(n*127.1+st.seed*91.37)*43758.5453123);const fmt=n=>Number(n).toFixed(2);const PI=Math.PI;
+const lum=c=>{const v=[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)/255).map(x=>x<=.03928?x/12.92:((x+.055)/1.055)**2.4);return .2126*v[0]+.7152*v[1]+.0722*v[2]};
 const colorAlpha=(c,a)=>{const r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);return `rgba(${r},${g},${b},${a})`};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const polar=(r,a)=>[400+Math.cos(a)*r,400+Math.sin(a)*r];
@@ -377,12 +389,14 @@ function drawMandala(ctx,L,p,time,audio){
    c.restore()}};
  const dot=c=>{c.globalAlpha=A(L.alpha.core);c.beginPath();c.arc(0,0,5+audio*25,0,2*PI);c.fill()};
  ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.shadowBlur=0;ctx.fillStyle=L.bg;ctx.fillRect(0,0,L.W,L.H);
- if(L.glow){const gr=ctx.createRadialGradient(L.cx,L.cy,0,L.cx,L.cy,L.R*.62);gr.addColorStop(0,colorAlpha(L.fg,.09));gr.addColorStop(1,colorAlpha(L.fg,0));ctx.fillStyle=gr;ctx.fillRect(0,0,L.W,L.H)}
+ const lightBg=lum(L.bg)>.45,glowCol=lightBg?L.accent:L.fg;
+ if(L.glow){const gr=ctx.createRadialGradient(L.cx,L.cy,0,L.cx,L.cy,L.R*.62);gr.addColorStop(0,colorAlpha(glowCol,lightBg?.12:.09));gr.addColorStop(1,colorAlpha(glowCol,0));ctx.fillStyle=gr;ctx.fillRect(0,0,L.W,L.H)}
  setup(ctx);strokeWedges(ctx,['rays','outer'],true);
  if(L.glow){
   // Kern apart tekenen en met één shadowBlur-pass als gloed terugplaatsen (snel, ook bij animatie).
   const off=glowCanvas(L.W,L.H),oc=off.getContext('2d');oc.setTransform(1,0,0,1,0,0);oc.clearRect(0,0,L.W,L.H);setup(oc);strokeWedges(oc,['core'],false);dot(oc);
-  ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.shadowColor=colorAlpha(L.fg,.65);ctx.shadowBlur=16*L.k;ctx.drawImage(off,0,0);ctx.shadowBlur=0;
+  ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;// Op een lichte achtergrond zou een gloed in de (donkere) lijnkleur een vuile schaduw geven: dan gloeit het accent.
+  ctx.shadowColor=colorAlpha(glowCol,lightBg?.45:.65);ctx.shadowBlur=(lightBg?12:16)*L.k;ctx.drawImage(off,0,0);ctx.shadowBlur=0;
  }else{strokeWedges(ctx,['core'],false);dot(ctx)}
  ctx.restore();
 }
