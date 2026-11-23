@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c0d0f">
+<title>Caleidoscoopgenerator</title>
+<meta name="description" content="Genereer eindeloze, bewegende caleidoscopen — kies vormen, kleuren en beweging en bewaar je favoriet als PNG.">
+<style>
+:root{--bg:#0c0d0f;--panel:#151719;--panel2:#1c1e21;--edge:#303338;--muted:#888d94;--soft:#babdc3;--text:#f4f2ec;--hi:#d6e3db}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{display:grid;grid-template-columns:minmax(0,1fr) 310px;grid-template-rows:100vh;grid-template-rows:100dvh;overflow:hidden}
+.podium{position:relative;min-width:0;min-height:0;background:var(--bg)}
+#caleido{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#caleido:active{cursor:grabbing}
+.terug{position:absolute;left:16px;top:14px;z-index:2;color:var(--soft);text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;background:rgba(12,13,15,.55);padding:7px 10px;border-radius:5px;backdrop-filter:blur(6px)}
+.terug:hover{color:#fff}
+#paneel{background:var(--panel);border-left:1px solid var(--edge);overflow-y:auto;min-height:0}
+body.kc-paneel-verborgen{grid-template-columns:minmax(0,1fr)}
+body.kc-paneel-verborgen #paneel{display:none}
+@media (max-width:799px){
+  body{display:block;overflow:auto}
+  .podium{height:min(100vw,72vh);height:min(100vw,72dvh)}
+  #paneel{border-left:0;border-top:1px solid var(--edge);overflow:visible}
+}
+</style>
+</head>
+<body>
+<main class="podium">
+  <a class="terug" href="../">← Shapes Lab</a>
+  <canvas id="caleido" aria-label="Bewegende caleidoscoop"></canvas>
+</main>
+<aside id="paneel" aria-label="Instellingen"></aside>
+<script src="kleuren.js"></script>
+<script src="vormen.js"></script>
+<script src="kern.js"></script>
+<script src="bediening.js"></script>
+<script>KControls.init(app, document.getElementById('paneel'));</script>
+</body>
+</html>
