@@ -283,7 +283,7 @@
   }
 
   /* ---------- tekenen ---------- */
-  var LIGHT = 'lighter', lastBg = '', KEEP = 1, W = 1, R = 1, T = 0, U = 1, P = null, NC = 1, X = 0, Y = 0;
+  var LIGHT = 'lighter', lastBg = '', LA = 1, LWK = 1, KEEP = 1, W = 1, R = 1, T = 0, U = 1, P = null, NC = 1, X = 0, Y = 0;
   var colors = null;
 
   function lum(hex) {
@@ -314,9 +314,9 @@
   function drawShape(ctx, s) {
     // lijnen dunnen uit bij smalle wiggen (anders wordt het na spiegelen een warboel)
     if (s.q !== undefined && s.q > KEEP) return;
-    ctx.globalAlpha = s.al == null ? 1 : s.al;
+    ctx.globalAlpha = (s.al == null ? 1 : s.al) * (s.l ? LA : 1);
     ctx.globalCompositeOperation = s.l ? LIGHT : 'source-over';
-    var lw = (s.lw || 0.003) * R, i, n, osc, r, a, pulse, size, ang, ca, sa, x, y, lx, ly, q;
+    var lw = (s.lw || 0.003) * R * (s.m === undefined ? LWK : 1), i, n, osc, r, a, pulse, size, ang, ca, sa, x, y, lx, ly, q;
     switch (s.k) {
       case 'band': {
         osc = sin(T * s.w + s.ph);
@@ -348,7 +348,7 @@
           for (i = 2; i < pts.length; i += 2) { warp(pts[i], pts[i + 1]); ctx.lineTo(X, Y); }
         }
         ctx.closePath();
-        if (s.fl) ctx.globalAlpha = s.al * (1 - s.fl + s.fl * (0.5 + 0.5 * sin(T * s.w + s.ph)));
+        if (s.fl) ctx.globalAlpha = s.al * (s.l ? LA : 1) * (1 - s.fl + s.fl * (0.5 + 0.5 * sin(T * s.w + s.ph)));
         paint(ctx, s, lw);
         return;
       }
@@ -562,7 +562,10 @@
     U = R * Math.min(1.1, 0.12 + wedge * 0.6);
     KEEP = Math.min(1, 0.25 + wedge * 0.7);
     // 'lighter' alleen op donkere achtergronden; op lichte (bv. pastel) zou het tot wit uitbijten
-    if (palette.background !== lastBg) { lastBg = palette.background; LIGHT = lum(lastBg) > 0.45 ? 'multiply' : 'lighter'; }
+    if (palette.background !== lastBg) { lastBg = palette.background; var bl = lum(lastBg); LIGHT = bl > 0.45 ? 'multiply' : 'lighter'; LWK = bl > 0.45 ? 1.7 : 1; }
+    // 'lighter' minder sterk bij heldere paletten, anders bleekt het midden uit tot wit
+    var sl = 0; for (var j = 0; j < NC; j++) sl += lum(colors[j]);
+    LA = LIGHT === 'lighter' ? Math.max(0.45, Math.min(1, 1.3 - sl / NC)) : 1;
     ctx.save();
     ctx.lineJoin = 'round';
     for (var i = 0; i < shapes.length; i++) drawShape(ctx, shapes[i]);

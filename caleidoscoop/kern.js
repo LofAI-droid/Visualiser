@@ -166,6 +166,12 @@
     tctx.globalCompositeOperation = 'source-over';
   }
 
+  // gloed enkel op donkere achtergronden; op lichte paletten bleekt hij uit
+  function isDark(hex) {
+    const n = parseInt(hex.slice(1), 16);
+    return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) < 110;
+  }
+
   function renderFrame(c, W, H, t, angle, palette, s, glow) {
     const R = Math.hypot(W, H) / 2;
     const n = s.segments;
@@ -191,7 +197,7 @@
     }
     c.restore();
 
-    if (glow) {
+    if (glow && isDark(palette.background)) {
       // goedkope bloom: verkleinde, vervaagde kopie er licht bovenop
       const gw = Math.max(1, Math.round(W / 8)), gh = Math.max(1, Math.round(H / 8));
       if (glowCanvas.width !== gw || glowCanvas.height !== gh) { glowCanvas.width = gw; glowCanvas.height = gh; }
