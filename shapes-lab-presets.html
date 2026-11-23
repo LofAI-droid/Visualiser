@@ -22,7 +22,7 @@
 /* Live mode uses the same 'contain' layout without cropping. */
 body.live .visualshell{background:var(--art-bg,#0d0e10)}
 body.live #visual svg{object-fit:contain}
-.record-float{display:none;position:absolute;top:18px;right:18px;z-index:15;gap:9px;align-items:center;padding:7px;border:1px solid #ffffff32;border-radius:7px;background:#121416d9;box-shadow:0 4px 28px #0006;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.record-float{display:none!important;position:absolute;top:18px;right:18px;z-index:15;gap:9px;align-items:center;padding:7px;border:1px solid #ffffff32;border-radius:7px;background:#121416d9;box-shadow:0 4px 28px #0006;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
 .visualshell:fullscreen .record-float,.visualshell:-webkit-full-screen .record-float,body.live .record-float{display:flex}
 .record-float .btn{white-space:nowrap}
 .record-time{color:#e8e8e3;font-variant-numeric:tabular-nums;font-size:12px;padding:0 4px}
@@ -81,6 +81,12 @@ body.output>header,body.output>main,body.output>.footer{display:none}
 .outtoast.show{opacity:1}
 #outputStage.panel-open .outtoast{bottom:auto;top:max(18px,env(safe-area-inset-top))}
 
+.formatgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.formatgrid .btn{flex-direction:column;align-items:flex-start;gap:2px;padding:10px 11px;text-align:left;width:100%}
+.formatgrid .btn small{color:#9aa3a0;font-size:10px;font-weight:400}
+.formatgrid .btn:last-child:nth-child(odd){grid-column:1 / -1}
+.outpal{width:auto;max-width:190px;margin:0;padding:7px 8px;font-size:11px}
+.outname{color:#d7d8da;font-size:12px;padding:0 4px;white-space:nowrap}
 .outbtns{display:flex;gap:8px;flex-wrap:wrap}.outbtns .btn{gap:0}
 /* Bediening voor Live via aanraken of klikken (niet zichtbaar in opnames: DOM, niet op het canvas). */
 .livepanel{position:absolute;left:0;right:0;margin:0 auto;width:max-content;bottom:max(18px,env(safe-area-inset-bottom));z-index:61;display:none;flex-wrap:wrap;justify-content:center;gap:8px;padding:10px;max-width:calc(100% - 24px);border:1px solid #ffffff2a;border-radius:10px;background:#111315e6;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
@@ -118,6 +124,7 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 @media(max-width:800px){
  .outbar{padding-bottom:8px;gap:6px}.outinfo{display:none}.outbar .grow{display:none}
  .outtabs{flex-wrap:nowrap;overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+ .outname{display:none}.outpal{max-width:none;width:100%;order:3}
  .outtabs::-webkit-scrollbar{display:none}.outtab{flex:none}
  .outbtns{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;width:100%}
  .outbtns .btn{padding-left:2px;padding-right:2px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -143,19 +150,19 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
  <section class="gallery" id="gallery"><div class="sectionrow"><div><div class="eyebrow">De bibliotheek</div><h2>Acht generatieve studies</h2></div><div class="filters" id="filters"><button class="filter active" data-filter="alles">Alles</button><button class="filter" data-filter="radiaal">Radiaal</button><button class="filter" data-filter="stroming">Stroming</button><button class="filter" data-filter="raster">Raster</button><button class="filter" data-filter="favoriet">Bewaard</button></div></div><div class="grid" id="tiles"></div></section>
  <section class="studio" id="studio">
   <div class="stagepanel">
-   <div class="stagehead"><div><button class="top-close" id="back">← Terug naar de galerij</button><h1 id="patternTitle">Prism Studies</h1><p id="patternDesc">Spiegelingen, lijnen en licht.</p></div><div class="tools"><button class="btn tiny" id="shuffle" title="Nieuwe variatie">↻ &nbsp; Randomiseer</button><button class="btn tiny" id="playBtn">Ⅱ &nbsp; Pauze</button><button class="btn tiny" id="recordTop" title="Start of stop een video-opname">● &nbsp; Opnemen</button><button class="btn tiny" id="formats" title="Uitvoerformaten voor de mandala (toetsen 1–5)">▣ &nbsp; Formaten</button><button class="btn tiny" id="fullscreen" title="Volledig scherm">⛶</button></div></div>
+   <div class="stagehead"><div><button class="top-close" id="back">← Terug naar de galerij</button><h1 id="patternTitle">Prism Studies</h1><p id="patternDesc">Spiegelingen, lijnen en licht.</p></div><div class="tools"><button class="btn tiny" id="shuffle" title="Nieuwe variatie">↻ &nbsp; Randomiseer</button><button class="btn tiny" id="playBtn">Ⅱ &nbsp; Pauze</button><button class="btn tiny" id="recordTop" title="Formaat kiezen, opnemen, PNG of live (toetsen 1–5)">● &nbsp; Formaat &amp; opname</button><button class="btn tiny" id="fullscreen" title="Volledig scherm">⛶</button></div></div>
    <div class="visualshell" id="visualshell"><div id="visual" style="width:100%;height:100%"></div><div class="record-float" id="recordFloat"><span class="record-time" id="recordTime">00:00</span><span class="floating-dest" id="recordFloatDestination">YouTube</span><button class="btn tiny" id="recordFloatBtn" title="Video-opname starten of stoppen">● &nbsp; Opnemen</button></div><div class="poster" id="poster"><div class="topline">SHAPES / EXPERIMENTAL STUDIES</div><div class="posterbottom"><div class="postertitle" id="posterText">LIGHT<br>FORMS</div><div class="postersub" id="posterSub">A live audiovisual study — 2026</div></div></div></div>
-   <div class="stagefoot"><div><span class="statusdot on" id="statusDot"></span><span id="stateText">Animatie actief</span></div><div class="hint"><span class="hint-keys">Tip: pijltjestoetsen = andere studie · spatie = afspelen/pauzeren · 1–5 = uitvoerformaten van de mandala</span><span class="hint-touch">Tip: tik op ▣ Formaten voor Instagram, TikTok, YouTube, Live en thumbnail.</span></div><div><button class="btn tiny" id="saveVariation">♡ &nbsp; Bewaar</button></div></div>
+   <div class="stagefoot"><div><span class="statusdot on" id="statusDot"></span><span id="stateText">Animatie actief</span></div><div class="hint"><span class="hint-keys">Tip: pijltjestoetsen = andere studie · spatie = afspelen/pauzeren · 1–5 = formaat &amp; opname</span><span class="hint-touch">Tip: tik op ● Formaat &amp; opname voor Instagram, TikTok, YouTube, Live en thumbnail.</span></div><div><button class="btn tiny" id="saveVariation">♡ &nbsp; Bewaar</button></div></div>
   </div>
-  <aside class="side"><h2>Parameters</h2><p class="sub">Verander de wiskundige regels, niet de afbeelding.</p><div class="groupname">Structuur</div><div id="sliders"></div><div class="divider"></div><div class="groupname">Kleur &amp; contrast</div><label for="paletteSelect" class="palette-label">Driekleurenpalet</label><select id="paletteSelect" class="video-select palette-select" aria-label="Kies een driekleurenpalet"></select><div class="palette-preview" id="palettePreview" aria-hidden="true"><span></span><span></span><span></span></div><div class="smallprint palette-help">Elke combinatie bevat een achtergrondkleur, lijnkleur en accentkleur. Je kunt de kleuren eronder ook zelf aanpassen.</div><div class="colorrow"><label class="colorslot">Achtergrond<input aria-label="Achtergrondkleur" id="bgColor" type="color" value="#0d0e10"></label><label class="colorslot">Lijnen<input aria-label="Lijnkleur" id="fgColor" type="color" value="#e6e9e4"></label><label class="colorslot">Accent<input aria-label="Accentkleur" id="accentColor" type="color" value="#b4c5bb"></label></div><div class="divider"></div><div class="groupname">Performance</div><div class="micline"><span>Microfoon-reactiviteit</span><button class="btn tiny" id="micBtn">Activeer</button></div><div class="wavebar"><span id="level"></span></div><div class="smallprint">Optioneel: reageert op het geluidsniveau. Toestemming voor microfoon vereist, bij voorkeur via HTTPS.</div><div class="divider"></div><div class="groupname">Beeld als bron</div><label class="upload">+ Upload een foto voor Prism Studies<input type="file" id="photo" accept="image/png,image/jpeg,image/webp"></label><div class="smallprint" id="photoHint">Gebruik je eigen foto in een gespiegeld radiaal patroon. De foto blijft op je apparaat.</div><div class="divider"></div><div class="groupname">Poster</div><label class="checkline"><input type="checkbox" id="posterToggle"> Toon typografische overlay</label><div id="posterFields" class="hide"><div class="control"><div class="controlhead"><label for="titleInput">Titel</label></div><input id="titleInput" value="LIGHT FORMS" style="width:100%;padding:9px;background:#212427;border:1px solid #45494e;border-radius:4px;color:white"></div><div class="control"><div class="controlhead"><label for="subtitleInput">Ondertitel</label></div><input id="subtitleInput" value="A live audiovisual study — 2026" style="width:100%;padding:9px;background:#212427;border:1px solid #45494e;border-radius:4px;color:white"></div></div><div class="divider"></div><div class="groupname">Exporteer</div><div class="exportrow"><button class="btn" id="svgDownload">↓ SVG</button><button class="btn" id="pngDownload">↓ PNG</button></div><div class="record-panel" id="recordPanel"><div class="record-panel-title"><span class="eyebrow">VIDEO-OPNAME</span><span class="record-panel-chip">Automatische instellingen</span></div><label for="recordDestination" class="destination-label">Waarvoor neem je op?</label><select id="recordDestination" class="video-select" aria-label="Kies het publicatiekanaal"><option value="youtube">YouTube · gewone video</option><option value="concert">Concert · liveprojectie (schermresolutie)</option><option value="instagram">Instagram · Reel</option><option value="tiktok">TikTok · video</option></select><div class="record-snapshot"><div class="record-frame-wrap"><div class="record-preview" id="recordPreview"><div class="record-preview-visual" id="recordPreviewArt"></div><div class="record-safe-guide" aria-hidden="true"></div></div><div class="record-frame-label">Voorbeeldkader</div></div><div class="record-specs" id="recordSpecs" aria-live="polite"></div></div><p class="record-compat" id="recordCompatibility" role="status"></p><button class="btn primary video-record-button" id="recordBtn">● &nbsp; Start video-opname</button><p class="smallprint video-hint" id="recordHelp">De app neemt alleen de animatie op, zonder bedieningsknoppen. Stop om te downloaden. Het tabblad moet open blijven. Er wordt geen geluid opgenomen.</p></div><div style="display:flex;gap:8px;margin-top:9px"><button class="btn" id="reset" style="flex:1">Herstel basis</button><button class="btn" id="copyConfig" style="flex:1">Kopieer settings</button></div><div class="notice" id="notice" role="status"></div><div class="divider"></div><div class="groupname">Bewaarde variaties</div><div class="presetlist" id="presets"></div><div class="smallprint">Variaties worden lokaal in deze browser opgeslagen.</div></aside>
+  <aside class="side"><h2>Parameters</h2><p class="sub">Verander de wiskundige regels, niet de afbeelding.</p><div class="groupname">Structuur</div><div id="sliders"></div><div class="divider"></div><div class="groupname">Kleur &amp; contrast</div><label for="paletteSelect" class="palette-label">Driekleurenpalet</label><select id="paletteSelect" class="video-select palette-select" aria-label="Kies een driekleurenpalet"></select><div class="palette-preview" id="palettePreview" aria-hidden="true"><span></span><span></span><span></span></div><div class="smallprint palette-help">Elke combinatie bevat een achtergrondkleur, lijnkleur en accentkleur. Je kunt de kleuren eronder ook zelf aanpassen.</div><div class="colorrow"><label class="colorslot">Achtergrond<input aria-label="Achtergrondkleur" id="bgColor" type="color" value="#0d0e10"></label><label class="colorslot">Lijnen<input aria-label="Lijnkleur" id="fgColor" type="color" value="#e6e9e4"></label><label class="colorslot">Accent<input aria-label="Accentkleur" id="accentColor" type="color" value="#b4c5bb"></label></div><div class="divider"></div><div class="groupname">Performance</div><div class="micline"><span>Microfoon-reactiviteit</span><button class="btn tiny" id="micBtn">Activeer</button></div><div class="wavebar"><span id="level"></span></div><div class="smallprint">Optioneel: reageert op het geluidsniveau. Toestemming voor microfoon vereist, bij voorkeur via HTTPS.</div><div class="divider"></div><div class="groupname">Beeld als bron</div><label class="upload">+ Upload een foto voor Prism Studies<input type="file" id="photo" accept="image/png,image/jpeg,image/webp"></label><div class="smallprint" id="photoHint">Gebruik je eigen foto in een gespiegeld radiaal patroon. De foto blijft op je apparaat.</div><div class="divider"></div><div class="groupname">Poster</div><label class="checkline"><input type="checkbox" id="posterToggle"> Toon typografische overlay</label><div id="posterFields" class="hide"><div class="control"><div class="controlhead"><label for="titleInput">Titel</label></div><input id="titleInput" value="LIGHT FORMS" style="width:100%;padding:9px;background:#212427;border:1px solid #45494e;border-radius:4px;color:white"></div><div class="control"><div class="controlhead"><label for="subtitleInput">Ondertitel</label></div><input id="subtitleInput" value="A live audiovisual study — 2026" style="width:100%;padding:9px;background:#212427;border:1px solid #45494e;border-radius:4px;color:white"></div></div><div class="divider"></div><div class="groupname">Exporteer</div><div class="exportrow"><button class="btn" id="svgDownload">↓ SVG</button><button class="btn" id="pngDownload">↓ PNG</button></div><div class="record-panel" id="recordPanel"><div class="record-panel-title"><span class="eyebrow">FORMAAT &amp; OPNAME</span><span class="record-panel-chip">Jouw kleuren</span></div><p class="smallprint" style="margin:0 0 12px">Kies een formaat. Het opnamevenster opent met deze studie, dit palet en deze instellingen. Daar neem je op, sla je een PNG op of ga je live.</p><div class="formatgrid" id="formatGrid"></div></div><div class="hide" aria-hidden="true"><div class="record-panel" id="legacyRecordPanel"><div class="record-panel-title"><span class="eyebrow">VIDEO-OPNAME</span><span class="record-panel-chip">Automatische instellingen</span></div><label for="recordDestination" class="destination-label">Waarvoor neem je op?</label><select id="recordDestination" class="video-select" aria-label="Kies het publicatiekanaal"><option value="youtube">YouTube · gewone video</option><option value="concert">Concert · liveprojectie (schermresolutie)</option><option value="instagram">Instagram · Reel</option><option value="tiktok">TikTok · video</option></select><div class="record-snapshot"><div class="record-frame-wrap"><div class="record-preview" id="recordPreview"><div class="record-preview-visual" id="recordPreviewArt"></div><div class="record-safe-guide" aria-hidden="true"></div></div><div class="record-frame-label">Voorbeeldkader</div></div><div class="record-specs" id="recordSpecs" aria-live="polite"></div></div><p class="record-compat" id="recordCompatibility" role="status"></p><button class="btn primary video-record-button" id="recordBtn">● &nbsp; Start video-opname</button><p class="smallprint video-hint" id="recordHelp">De app neemt alleen de animatie op, zonder bedieningsknoppen. Stop om te downloaden. Het tabblad moet open blijven. Er wordt geen geluid opgenomen.</p></div></div><div style="display:flex;gap:8px;margin-top:9px"><button class="btn" id="reset" style="flex:1">Herstel basis</button><button class="btn" id="copyConfig" style="flex:1">Kopieer settings</button></div><div class="notice" id="notice" role="status"></div><div class="divider"></div><div class="groupname">Bewaarde variaties</div><div class="presetlist" id="presets"></div><div class="smallprint">Variaties worden lokaal in deze browser opgeslagen.</div></aside>
  </section>
 </main>
 <div class="footer"><span>SHAPES LAB 4 — independent generative experiments.</span><span>Vrijstaande studie, geen kopie of onderdeel van <a href="https://bookofshapes.com" target="_blank" rel="noreferrer">Book of Shapes</a>.</span></div>
 <section id="outputStage" aria-label="Uitvoerformaat">
- <div class="outbar"><div class="outtabs" id="outTabs"></div><span class="outinfo" id="outInfo"></span><span class="outrec" id="outRecTime"></span><span class="grow"></span><div class="outbtns"><button class="btn tiny" id="outPlay" title="Afspelen/pauzeren (spatie)">Ⅱ<span class="lbl">&nbsp;Pauze</span></button><button class="btn tiny" id="outGrid" title="Veilige zones tonen (g)">▦<span class="lbl">&nbsp;Zones</span><span class="kh">&nbsp;· g</span></button><button class="btn tiny" id="outPng" title="Eén PNG op volle resolutie (s)">↓ PNG<span class="kh">&nbsp;· s</span></button><button class="btn tiny" id="outRec" title="Video-opname op volle resolutie (r)">●<span class="lbl">&nbsp;Opnemen</span><span class="kh">&nbsp;· r</span></button><button class="btn tiny" id="outBack" title="Terug naar de editor (Esc)">←<span class="lbl">&nbsp;Editor</span><span class="kh">&nbsp;· Esc</span></button></div></div>
+ <div class="outbar"><div class="outtabs" id="outTabs"></div><span class="outname" id="outName"></span><select class="video-select outpal" id="outPalette" aria-label="Kleurenpalet" title="Kleurenpalet (c)"></select><span class="outinfo" id="outInfo"></span><span class="outrec" id="outRecTime"></span><span class="grow"></span><div class="outbtns"><button class="btn tiny" id="outPlay" title="Afspelen/pauzeren (spatie)">Ⅱ<span class="lbl">&nbsp;Pauze</span></button><button class="btn tiny" id="outGrid" title="Veilige zones tonen (g)">▦<span class="lbl">&nbsp;Zones</span><span class="kh">&nbsp;· g</span></button><button class="btn tiny" id="outPng" title="Eén PNG op volle resolutie (s)">↓ PNG<span class="kh">&nbsp;· s</span></button><button class="btn tiny" id="outRec" title="Video-opname op volle resolutie (r)">●<span class="lbl">&nbsp;Opnemen</span><span class="kh">&nbsp;· r</span></button><button class="btn tiny" id="outBack" title="Terug naar de editor (Esc)">←<span class="lbl">&nbsp;Editor</span><span class="kh">&nbsp;· Esc</span></button></div></div>
  <div class="outview" id="outView"><div class="outframe" id="outFrame"><canvas id="outCanvas" width="1080" height="1920"></canvas><canvas id="outOverlay" width="1080" height="1920"></canvas></div></div>
  <div class="outtoast" id="outToast" role="status" aria-live="polite"></div>
- <div class="livepanel" id="livePanel" role="toolbar" aria-label="Live-bediening"><button class="btn tiny" data-act="exit">← Editor</button><button class="btn tiny" data-act="fs">⛶ Volledig scherm</button><div class="lp-group"><span>Helderheid</span><button class="btn tiny" data-act="b-" aria-label="Helderheid lager">−</button><button class="btn tiny" data-act="b+" aria-label="Helderheid hoger">+</button></div><div class="lp-group"><span>Lijn</span><button class="btn tiny" data-act="l-" aria-label="Dunnere lijn">−</button><button class="btn tiny" data-act="l+" aria-label="Dikkere lijn">+</button></div><button class="btn tiny" data-act="play">Ⅱ Pauze</button><button class="btn tiny" data-act="grid">▦ Zones</button><button class="btn tiny" data-act="rec">● Opnemen</button></div>
+ <div class="livepanel" id="livePanel" role="toolbar" aria-label="Live-bediening"><button class="btn tiny" data-act="exit">← Editor</button><button class="btn tiny" data-act="fs">⛶ Volledig scherm</button><div class="lp-group"><span>Helderheid</span><button class="btn tiny" data-act="b-" aria-label="Helderheid lager">−</button><button class="btn tiny" data-act="b+" aria-label="Helderheid hoger">+</button></div><div class="lp-group"><span>Lijn</span><button class="btn tiny" data-act="l-" aria-label="Dunnere lijn">−</button><button class="btn tiny" data-act="l+" aria-label="Dikkere lijn">+</button></div><div class="lp-group"><span>Kleur</span><button class="btn tiny" data-act="p-" aria-label="Vorig palet">‹</button><button class="btn tiny" data-act="p+" aria-label="Volgend palet">›</button></div><button class="btn tiny" data-act="play">Ⅱ Pauze</button><button class="btn tiny" data-act="grid">▦ Zones</button><button class="btn tiny" data-act="rec">● Opnemen</button></div>
 </section>
 <script>
 (()=>{'use strict';
@@ -327,6 +334,7 @@ function safeZones(id,W,H){const sx=W/1080,sy=H/1920;
  return[];
 }
 const distToRect=(x,y,z)=>Math.hypot(Math.max(z.x-x,0,x-(z.x+z.w)),Math.max(z.y-y,0,y-(z.y+z.h)));
+const chebToRect=(x,y,z)=>Math.max(Math.max(z.x-x,0,x-(z.x+z.w)),Math.max(z.y-y,0,y-(z.y+z.h)));
 function mandalaGeometry(p,time){
  const tt=time*(0.15+p.speed*.012),e=p.energy/100,d=p.density/100,n=p.symmetry*2,half=PI/n,count=Math.round(8+d*20),rings=[];let extent=0;
  for(let k=0;k<count;k++){const r=22+k*(318/Math.max(1,count-1))+(p.seed%11)*.3,rr=12+e*40+(k%5)*5;extent=Math.max(extent,r+rr);
@@ -336,69 +344,85 @@ function mandalaGeometry(p,time){
 function outputLayout(id,W,H){
  const P=OUTPUT_PRESETS[id],m=Math.min(W,H),k=m/1080,live=id==='live';
  const base=(live?liveTune.line:P.line)*(st.stroke/defaults.stroke),lw=base*k;
- const cx=W/2,cy=H*P.cy,Rreq=m*P.factor,zones=safeZones(id,W,H);
- let minDist=Infinity;for(const z of zones)minDist=Math.min(minDist,distToRect(cx,cy,z));
+ const cx=W/2,cy=H*P.cy,Rreq=m*P.factor,zones=safeZones(id,W,H),mode=current==='prism'?'circle':'square';
+ // Mandala: cirkel met straal R. Andere studies: vierkant kader met halve zijde R (hun 800×800-tekenvlak).
+ let minDist=Infinity;for(const z of zones)minDist=Math.min(minDist,mode==='circle'?distToRect(cx,cy,z):chebToRect(cx,cy,z));
  // Veiligheidsbegrenzing: de buitenrand van het cirkelwerk (incl. halve lijndikte) blijft buiten elke zone.
  const R=P.clamp&&zones.length?Math.min(Rreq,minDist-lw/2-2*k):Rreq;
- return{id,W,H,m,k,cx,cy,R,Rreq,lw,base,bg:P.bg,zones,minDist,extent:mandalaGeometry(st,0).extent,
+ return{id,W,H,m,k,cx,cy,R,Rreq,lw,base,mode,bg:st.bg,fg:st.fg,accent:st.accent,zones,minDist,extent:mandalaGeometry(st,0).extent,
   alpha:{core:.9,outer:.6,rays:P.rays},bright:(P.bright||1)*(live?liveTune.bright:1),glow:!!P.glow};
 }
 function glowCanvas(w,h){if(!glowCv)glowCv=document.createElement('canvas');if(glowCv.width!==w)glowCv.width=w;if(glowCv.height!==h)glowCv.height=h;return glowCv}
 function drawMandala(ctx,L,p,time,audio){
  const g=mandalaGeometry(p,time),s=L.R/g.extent,coreLimit=g.extent*.55,A=v=>clamp(v*L.bright,0,1);
  const layers={core:new Map(),outer:new Map(),rays:new Map()};
- const pathFor=(layer,alpha)=>{const key=A(alpha).toFixed(3),m=layers[layer];if(!m.has(key))m.set(key,new Path2D());return m.get(key)};
+ const pathFor=(layer,alpha,accent)=>{const key=(accent?L.accent:L.fg)+'|'+A(alpha).toFixed(3),m=layers[layer];if(!m.has(key))m.set(key,new Path2D());return m.get(key)};
  if(!photoImg){
   for(const{k,r,rr,theta}of g.rings){
    const inner=r<coreLimit,layer=inner?'core':'outer',[x,y]=pc(r,theta);
    // kern = binnenste ringen + spaken (0.9); buitenste cirkels ≥ 0.6, met dezelfde ritmische variatie als het origineel
-   const cp=pathFor(layer,inner?L.alpha.core:L.alpha.outer+(k%5)/4*.25);cp.moveTo(x+rr,y);cp.arc(x,y,rr,0,2*PI);
-   const a=pc(r+rr,theta-g.half*.25),b=pc(r-rr,theta+g.half*.35),sp=pathFor(layer,inner?L.alpha.core:L.alpha.outer+.1);sp.moveTo(a[0],a[1]);sp.lineTo(b[0],b[1]);
+   const cp=pathFor(layer,inner?L.alpha.core:L.alpha.outer+(k%5)/4*.25,k%5===0);cp.moveTo(x+rr,y);cp.arc(x,y,rr,0,2*PI);
+   const a=pc(r+rr,theta-g.half*.25),b=pc(r-rr,theta+g.half*.35),sp=pathFor(layer,inner?L.alpha.core:L.alpha.outer+.1,k%4===0);sp.moveTo(a[0],a[1]);sp.lineTo(b[0],b[1]);
   }
   // vage buitenste stralen: mogen buiten de straal van het cirkelwerk uitlopen
-  for(let k=0;k<5;k++){const a=pc(60+k*63,-PI/2+g.half*.28),b=pc(420,-PI/2+g.half*(.08+k*.1)),rp=pathFor('rays',L.alpha.rays);rp.moveTo(a[0],a[1]);rp.lineTo(b[0],b[1])}
+  for(let k=0;k<5;k++){const a=pc(60+k*63,-PI/2+g.half*.28),b=pc(420,-PI/2+g.half*(.08+k*.1)),rp=pathFor('rays',L.alpha.rays,true);rp.moveTo(a[0],a[1]);rp.lineTo(b[0],b[1])}
  }
  const wedge=new Path2D();wedge.moveTo(0,0);wedge.arc(0,0,440,-PI/2-g.half,-PI/2+g.half);wedge.closePath();
- const setup=c=>{c.setTransform(1,0,0,1,0,0);c.translate(L.cx,L.cy);c.scale(s,s);c.lineCap='round';c.lineJoin='round';c.lineWidth=L.lw/s;c.strokeStyle='#fff';c.fillStyle='#fff'};
+ const setup=c=>{c.setTransform(1,0,0,1,0,0);c.translate(L.cx,L.cy);c.scale(s,s);c.lineCap='round';c.lineJoin='round';c.lineWidth=L.lw/s;c.fillStyle=L.accent};
  const strokeWedges=(c,names,withPhoto)=>{for(let i=0;i<g.n;i++){c.save();c.rotate(i*2*g.half);if(i%2)c.scale(-1,1);
    if(withPhoto&&photoImg){const sh=Math.sin(g.tt)*70*g.e,iw=photoImg.naturalWidth,ih=photoImg.naturalHeight,sq=Math.min(iw,ih);c.save();c.clip(wedge);c.globalAlpha=.97;c.drawImage(photoImg,(iw-sq)/2,(ih-sq)/2,sq,sq,-490+sh,-480+sh,980,980);c.restore()}
    // k: wig-knipping aan (zoals SVG-export/opname) of uit (zoals de editor in Chrome op het scherm toont)
    if(wedgeClip)c.clip(wedge);
-   for(const name of names)for(const[key,path]of layers[name]){c.globalAlpha=+key;c.stroke(path)}
+   for(const name of names)for(const[key,path]of layers[name]){const[col,al]=key.split('|');c.strokeStyle=col;c.globalAlpha=+al;c.stroke(path)}
    c.restore()}};
  const dot=c=>{c.globalAlpha=A(L.alpha.core);c.beginPath();c.arc(0,0,5+audio*25,0,2*PI);c.fill()};
  ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.shadowBlur=0;ctx.fillStyle=L.bg;ctx.fillRect(0,0,L.W,L.H);
- if(L.glow){const gr=ctx.createRadialGradient(L.cx,L.cy,0,L.cx,L.cy,L.R*.62);gr.addColorStop(0,'rgba(255,255,255,.09)');gr.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=gr;ctx.fillRect(0,0,L.W,L.H)}
+ if(L.glow){const gr=ctx.createRadialGradient(L.cx,L.cy,0,L.cx,L.cy,L.R*.62);gr.addColorStop(0,colorAlpha(L.fg,.09));gr.addColorStop(1,colorAlpha(L.fg,0));ctx.fillStyle=gr;ctx.fillRect(0,0,L.W,L.H)}
  setup(ctx);strokeWedges(ctx,['rays','outer'],true);
  if(L.glow){
   // Kern apart tekenen en met één shadowBlur-pass als gloed terugplaatsen (snel, ook bij animatie).
   const off=glowCanvas(L.W,L.H),oc=off.getContext('2d');oc.setTransform(1,0,0,1,0,0);oc.clearRect(0,0,L.W,L.H);setup(oc);strokeWedges(oc,['core'],false);dot(oc);
-  ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.shadowColor='rgba(255,255,255,.65)';ctx.shadowBlur=16*L.k;ctx.drawImage(off,0,0);ctx.shadowBlur=0;
+  ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.shadowColor=colorAlpha(L.fg,.65);ctx.shadowBlur=16*L.k;ctx.drawImage(off,0,0);ctx.shadowBlur=0;
  }else{strokeWedges(ctx,['core'],false);dot(ctx)}
  ctx.restore();
+}
+let svgJob={busy:false,img:null,size:0,key:''};
+function drawSvgFrame(ctx,L){
+ const sc=2*L.R/800,size=Math.max(1,Math.round(1050*sc)),x=L.cx-L.R-125*sc,y=L.cy-L.R-125*sc;
+ ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.shadowBlur=0;ctx.fillStyle=L.bg;ctx.fillRect(0,0,L.W,L.H);
+ if(svgJob.img&&svgJob.size===size){ctx.globalAlpha=clamp(L.bright,0,1);ctx.drawImage(svgJob.img,x,y,size,size)}
+ ctx.restore();
+ const key=[current,size,clock.toFixed(3),level.toFixed(2),JSON.stringify(st)].join('|');
+ if(svgJob.busy||key===svgJob.key)return;
+ svgJob.busy=true;svgJob.key=key;
+ // De SVG krijgt de doelmaat in pixels mee, zodat de browser scherp rastert (ook in 4K).
+ const svg=renderSvg(current,st,clock,level).replace('width="1050" height="1050"',`width="${size}" height="${size}"`),url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'})),im=new Image();
+ im.onload=()=>{URL.revokeObjectURL(url);svgJob.img=im;svgJob.size=size;svgJob.busy=false;outDirty=true};
+ im.onerror=()=>{URL.revokeObjectURL(url);svgJob.busy=false};im.src=url;
 }
 function drawSafeOverlay(o,L){
  const k=L.k,P=OUTPUT_PRESETS[L.id],circle=r=>{o.beginPath();o.arc(L.cx,L.cy,r,0,2*PI);o.stroke()};
  o.save();o.setTransform(1,0,0,1,0,0);o.textBaseline='top';o.font=`600 ${Math.round(17*k)}px system-ui,-apple-system,"Segoe UI",sans-serif`;
  for(const z of L.zones){o.fillStyle='rgba(255,60,60,.26)';o.fillRect(z.x,z.y,z.w,z.h);o.setLineDash([]);o.lineWidth=Math.max(1,2*k);o.strokeStyle='rgba(255,110,110,.95)';o.strokeRect(z.x,z.y,z.w,z.h);
   if(z.label){o.fillStyle='#ffc4c4';const tx=z.x+10*k,ty=z.y+z.h>L.H-1&&z.y>L.H*.5&&z.w>L.W*.5?z.y+z.h-28*k:z.y+10*k;o.fillText(z.label,tx,ty,z.w-20*k)}}
- o.lineWidth=Math.max(1,1.5*k);o.setLineDash([3*k,7*k]);o.strokeStyle='rgba(210,210,210,.6)';circle(L.R*420/L.extent);
- if(L.R<L.Rreq-.5){o.lineWidth=Math.max(1,2*k);o.setLineDash([10*k,8*k]);o.strokeStyle='rgba(255,196,80,.95)';circle(L.Rreq)}
- o.lineWidth=Math.max(1,2.5*k);o.setLineDash([14*k,9*k]);o.strokeStyle='#4fd8ff';circle(L.R);
+ const square=L.mode==='square',shape=r=>square?(o.beginPath(),o.strokeRect(L.cx-r,L.cy-r,2*r,2*r)):circle(r);
+ if(!square){o.lineWidth=Math.max(1,1.5*k);o.setLineDash([3*k,7*k]);o.strokeStyle='rgba(210,210,210,.6)';circle(L.R*420/L.extent)}
+ if(L.R<L.Rreq-.5){o.lineWidth=Math.max(1,2*k);o.setLineDash([10*k,8*k]);o.strokeStyle='rgba(255,196,80,.95)';shape(L.Rreq)}
+ o.lineWidth=Math.max(1,2.5*k);o.setLineDash([14*k,9*k]);o.strokeStyle='#4fd8ff';shape(L.R);
  o.setLineDash([]);o.lineWidth=Math.max(1,1.5*k);o.beginPath();o.moveTo(L.cx-18*k,L.cy);o.lineTo(L.cx+18*k,L.cy);o.moveTo(L.cx,L.cy-18*k);o.lineTo(L.cx,L.cy+18*k);o.stroke();
  const margin=L.minDist-L.R-L.lw/2,clamped=L.R<L.Rreq-.5,lines=[
   [`${P.label} · ${L.W} × ${L.H} px`+(L.id==='live'?` · DPR ${window.devicePixelRatio||1}`:''),'#fff'],
-  [`Straal cirkelwerk ${L.R.toFixed(0)} px · factor ${P.factor.toFixed(2)}`+(clamped?` → ${(L.R/L.m).toFixed(3)} (begrensd)`:''),clamped?'#ffd27a':'#fff'],
+  [(square?`Kader ${(2*L.R).toFixed(0)} px breed`:`Straal cirkelwerk ${L.R.toFixed(0)} px`)+` · factor ${P.factor.toFixed(2)}`+(clamped?` → ${(L.R/L.m).toFixed(3)} (begrensd)`:''),clamped?'#ffd27a':'#fff'],
   [`Middelpunt y ${(L.cy/L.H*100).toFixed(0)}% · lijn ${L.lw.toFixed(2)} px · helderheid ${Math.round(L.bright*100)}% · `+(wedgeClip?'geknipt':'volle cirkels'),'#fff']];
- if(L.zones.length)lines.push(margin>=0?[`✓ Cirkelwerk raakt geen zone · vrije marge ${margin.toFixed(1)} px`,'#86ffb0']:[`✕ Cirkelwerk raakt een zone (${margin.toFixed(1)} px)`,'#ff8a8a']);
+ if(L.zones.length)lines.push(margin>=0?[`✓ ${square?'Kader':'Cirkelwerk'} raakt geen zone · vrije marge ${margin.toFixed(1)} px`,'#86ffb0']:[`✕ ${square?'Kader':'Cirkelwerk'} raakt een zone (${margin.toFixed(1)} px)`,'#ff8a8a']);
  else lines.push(L.R>Math.min(L.cy,L.H-L.cy)?[`Geen UI-zones · cirkelwerk loopt bewust buiten beeld (factor ${P.factor.toFixed(2)})`,'#ffd27a']:['Geen UI-zones','#86ffb0']);
- lines.push(['Cyaan = cirkelwerk · grijs gestippeld = bereik vage stralen'+(clamped?' · oranje = gevraagde factor':''),'#a9b4b8']);
+ lines.push([(square?'Cyaan = kader van de studie':'Cyaan = cirkelwerk · grijs gestippeld = bereik vage stralen')+(clamped?' · oranje = gevraagde factor':''),'#a9b4b8']);
  const lh=24*k,pad=12*k,bw=Math.max(...lines.map(([t])=>o.measureText(t).width))+pad*2,bx=16*k,by=L.id==='youtube'||L.id==='thumbnail'?16*k:L.H*.5-(lines.length*lh+pad*2)/2-L.R-30*k;
  const y0=Math.max(16*k,by);o.fillStyle='rgba(0,0,0,.74)';o.fillRect(bx,y0,Math.min(bw,L.W-32*k),lines.length*lh+pad*2);
  lines.forEach(([t,c],i)=>{o.fillStyle=c;o.fillText(t,bx+pad,y0+pad+i*lh,L.W-32*k-pad*2)});
  o.restore();
 }
-function drawOutput(){const c=$('#outCanvas');if(!outPreset||!c.width)return;const t0=performance.now();const L=outputLayout(outPreset,c.width,c.height);drawMandala(c.getContext('2d'),L,st,clock,level);
+function drawOutput(){const c=$('#outCanvas');if(!outPreset||!c.width)return;const t0=performance.now();const L=outputLayout(outPreset,c.width,c.height);if(current==='prism')drawMandala(c.getContext('2d'),L,st,clock,level);else drawSvgFrame(c.getContext('2d'),L);
  const ov=$('#outOverlay'),o=ov.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,ov.width,ov.height);if(showGrid&&ov.width===c.width)drawSafeOverlay(o,L);outDirty=false;
  // Trage toestellen (bv. 4K op een telefoon): minder beelden per seconde in plaats van een bevroren interface. De resolutie blijft exact.
  outFrameMs=outFrameMs*.8+(performance.now()-t0)*.2}
@@ -411,36 +435,41 @@ function sizeOutput(){if(!outPreset)return;const P=OUTPUT_PRESETS[outPreset],liv
  $('#outInfo').textContent=`Rendert op ${W} × ${H} px`+(live?' (schermresolutie)':` · voorvertoning ${Math.round(scale*100)}%`);
  outDirty=true;drawOutput();
 }
+function fillPaletteSelect(sel){sel.innerHTML=palettes.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')+'<option value="custom">Eigen kleuren</option>'}
+function applyPalette(id){const pal=palettes.find(p=>p.id===id);if(!pal)return;st.bg=pal.bg;st.fg=pal.fg;st.accent=pal.accent;outDirty=true;if(outPreset)updateOutBar();showToast(pal.name,1200)}
+function stepPalette(d){const i=palettes.findIndex(p=>p.id===matchPalette(st)),n=palettes.length;applyPalette(palettes[((i<0?(d>0?-1:0):i)+d+n)%n].id)}
 function updateOutBar(){
+ const pat=patterns.find(x=>x.id===current);$('#outName').textContent=pat?pat.name:'';const ps=$('#outPalette');if(!ps.options.length)fillPaletteSelect(ps);ps.value=matchPalette(st);
  $('#outTabs').innerHTML=OUTPUT_ORDER.map((id,i)=>`<button class="outtab${id===outPreset?' active':''}" data-preset="${id}"><b>${i+1}</b>${OUTPUT_PRESETS[id].label}</button>`).join('');
  $('#outTabs').querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>enterOutput(b.dataset.preset));
  $('#outGrid').classList.toggle('on',showGrid);$('#outRec').innerHTML=outRec?'■<span class="lbl">&nbsp;Stop</span><span class="kh">&nbsp;· r</span>':'●<span class="lbl">&nbsp;Opnemen</span><span class="kh">&nbsp;· r</span>';$('#outRec').classList.toggle('on',!!outRec);
  $('#outPlay').innerHTML=playing?'Ⅱ<span class="lbl">&nbsp;Pauze</span>':'▶<span class="lbl">&nbsp;Afspelen</span>';
  const lp=$('#livePanel');lp.querySelector('[data-act=play]').textContent=playing?'Ⅱ Pauze':'▶ Afspelen';lp.querySelector('[data-act=rec]').textContent=outRec?'■ Stop opname':'● Opnemen';lp.querySelector('[data-act=grid]').classList.toggle('on',showGrid);
+ $('#outputStage').style.background=outPreset==='live'?st.bg:'';
  lp.querySelector('[data-act=fs]').textContent=(document.fullscreenElement||document.webkitFullscreenElement)?'✕ Volledig scherm':'⛶ Volledig scherm';if(!outRec)$('#outRecTime').textContent='';
 }
 function showToast(msg,ms=1500){const t=$('#outToast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),ms)}
 function enterOutput(id){
  id=String(id||'').toLowerCase();if(!OUTPUT_PRESETS[id])return;if(outRec&&id!==outPreset)stopOutRec();if(recording?.active)stopRecording();
  const was=outPreset;if((document.fullscreenElement||document.webkitFullscreenElement)&&id!=='live')(document.exitFullscreen?.()||document.webkitExitFullscreen?.())?.catch?.(()=>{});
- outPreset=id;lastOutPreset=id;current='prism';live=false;document.body.classList.remove('editing','live');document.body.classList.add('output');
+ outPreset=id;lastOutPreset=id;live=false;svgJob.key='';document.body.classList.remove('editing','live');document.body.classList.add('output');
  $('#outputStage').classList.toggle('live',id==='live');updateOutBar();sizeOutput();
  try{const u=new URL(location.href);u.searchParams.set('preset',id);history.replaceState(null,'',u)}catch(e){}
- document.title='Mandala · '+OUTPUT_PRESETS[id].label+' — SHAPES LAB';
+ document.title=(patterns.find(x=>x.id===current)?.name||'')+' · '+OUTPUT_PRESETS[id].label+' — SHAPES LAB';
  keepAwake(id==='live');if(id!=='live')showLivePanel(false);
  if(id==='live'&&was!=='live')showToast(matchMedia('(hover:none),(pointer:coarse)').matches?'Live · tik op het beeld voor bediening':'Live · f = volledig scherm · [ ] = helderheid · − = = lijndikte · Esc = terug',2600);
 }
 function exitOutput(){if(outRec)stopOutRec();keepAwake(false);showLivePanel(false);if(document.fullscreenElement||document.webkitFullscreenElement)(document.exitFullscreen?.()||document.webkitExitFullscreen?.())?.catch?.(()=>{});
  outPreset=null;$('#outputStage').classList.remove('live');document.body.classList.remove('output');
- try{const u=new URL(location.href);u.searchParams.delete('preset');u.searchParams.delete('grid');history.replaceState(null,'',u)}catch(e){}openPattern('prism')}
+ try{const u=new URL(location.href);u.searchParams.delete('preset');u.searchParams.delete('grid');history.replaceState(null,'',u)}catch(e){}openPattern(current)}
 function toggleGrid(){showGrid=!showGrid;sizeOverlay();updateOutBar();outDirty=true;drawOutput()}
-function saveOutputPng(){const c=$('#outCanvas');drawOutput();c.toBlob(b=>{if(!b){showToast('PNG opslaan mislukt.');return}blobDownload(b,`shapes-mandala-${outPreset}-${c.width}x${c.height}-seed${st.seed}.png`);showToast(`PNG opgeslagen · ${c.width} × ${c.height}`,1800)},'image/png')}
+function saveOutputPng(){const c=$('#outCanvas');drawOutput();c.toBlob(b=>{if(!b){showToast('PNG opslaan mislukt.');return}blobDownload(b,`shapes-${current}-${outPreset}-${c.width}x${c.height}-seed${st.seed}.png`);showToast(`PNG opgeslagen · ${c.width} × ${c.height}`,1800)},'image/png')}
 function startOutRec(){const c=$('#outCanvas');if(!window.MediaRecorder||!c.captureStream){showToast('Video-opname wordt hier niet ondersteund. Probeer Chrome, Edge of Safari.',2500);return}
  try{const P=OUTPUT_PRESETS[outPreset],mime=supportedVideoMime(),opts={videoBitsPerSecond:P.bitrate};if(mime)opts.mimeType=mime;
-  const stream=c.captureStream(30),rec=new MediaRecorder(stream,opts),chunks=[],meta={preset:outPreset,w:c.width,h:c.height,start:performance.now()};
+  const stream=c.captureStream(30),rec=new MediaRecorder(stream,opts),chunks=[],meta={preset:outPreset,pattern:current,w:c.width,h:c.height,start:performance.now()};
   rec.ondataavailable=e=>{if(e.data?.size>0)chunks.push(e.data)};
   rec.onstop=()=>{stream.getTracks().forEach(t=>t.stop());const type=rec.mimeType||mime||'video/webm',blob=new Blob(chunks,{type});
-   if(blob.size>0){const ext=/mp4/i.test(type)?'mp4':'webm';blobDownload(blob,`shapes-mandala-${meta.preset}-${meta.w}x${meta.h}-${Date.now()}.${ext}`,60000);showToast(`Video opgeslagen · ${meta.w} × ${meta.h} · ${ext.toUpperCase()}`,2500)}else showToast('De browser leverde geen video op.',2500)};
+   if(blob.size>0){const ext=/mp4/i.test(type)?'mp4':'webm';blobDownload(blob,`shapes-${meta.pattern}-${meta.preset}-${meta.w}x${meta.h}-${Date.now()}.${ext}`,60000);showToast(`Video opgeslagen · ${meta.w} × ${meta.h} · ${ext.toUpperCase()}`,2500)}else showToast('De browser leverde geen video op.',2500)};
   rec.start(1000);outRec={rec,stream,meta};setPlaying(true);updateOutBar();showToast(`Opname gestart · ${meta.w} × ${meta.h}`,1500);
  }catch(err){outRec=null;updateOutBar();showToast('Opname niet gestart: '+(err.message||'onbekende fout'),2500)}}
 function stopOutRec(){const r=outRec;if(!r)return;outRec=null;try{r.rec.state!=='inactive'?r.rec.stop():r.rec.onstop?.()}catch(e){r.stream.getTracks().forEach(t=>t.stop())}updateOutBar()}
@@ -455,6 +484,8 @@ function outputKey(e){
  const key=e.key,low=key.length===1?key.toLowerCase():key;
  if(key===' '){e.preventDefault();setPlaying(!playing);outDirty=true;return}
  if(low==='g'){toggleGrid();return}
+ if(low==='c'){stepPalette(e.shiftKey?-1:1);return}
+ if(key==='ArrowRight'||key==='ArrowLeft'){e.preventDefault();const i=patterns.findIndex(x=>x.id===current);current=patterns[(i+(key==='ArrowRight'?1:-1)+patterns.length)%patterns.length].id;renderControls();svgJob.key='';outDirty=true;updateOutBar();enterOutput(outPreset);showToast(patterns.find(x=>x.id===current).name,1200);return}
  if(low==='s'){e.preventDefault();saveOutputPng();return}
  if(low==='r'){toggleOutRec();return}
  if(low==='k'){wedgeClip=!wedgeClip;outDirty=true;showToast(wedgeClip?'Segmenten geknipt (zoals export)':'Volle cirkels (zoals editor-scherm)');return}
@@ -473,7 +504,7 @@ function tune(act){
 // Live-paneel: tik/klik op het beeld toont het 4 s; elke actie houdt het open.
 function showLivePanel(on){const st_=$('#outputStage');clearTimeout(panelTimer);st_.classList.toggle('panel-open',on);$('#livePanel').setAttribute('aria-hidden',on?'false':'true');if(on){updateOutBar();panelTimer=setTimeout(()=>showLivePanel(false),4000)}}
 function livePanelAction(act){showLivePanel(true);
- if(act==='exit'){showLivePanel(false);exitOutput()}else if(act==='fs')toggleOutFullscreen();else if(act==='play')setPlaying(!playing);else if(act==='grid')toggleGrid();else if(act==='rec')toggleOutRec();else tune(act)}
+ if(act==='exit'){showLivePanel(false);exitOutput()}else if(act==='fs')toggleOutFullscreen();else if(act==='play')setPlaying(!playing);else if(act==='grid')toggleGrid();else if(act==='rec')toggleOutRec();else if(act==='p+')stepPalette(1);else if(act==='p-')stepPalette(-1);else tune(act)}
 // Scherm wakker houden tijdens Live (Chrome, Edge, Safari 16.4+, Android). Faalt stil waar het niet kan.
 async function keepAwake(on){try{if(on&&!wakeLock&&navigator.wakeLock&&document.visibilityState==='visible'){wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener?.('release',()=>{wakeLock=null})}else if(!on&&wakeLock){const w=wakeLock;wakeLock=null;await w.release()}}catch(e){wakeLock=null}}
 function notify(message){const e=$('#notice');e.textContent=message;e.classList.add('show');clearTimeout(noticeTimeout);noticeTimeout=setTimeout(()=>e.classList.remove('show'),4400)}
@@ -530,7 +561,7 @@ function updateDestinationUI(){
 }
 function setRecordUI(){const active=!!recording?.active||recordStarting,disabling=active||recording?.stopping;
  document.body.classList.toggle('recording-active',active);
- const label=active?'■  Stop opname':'●  Opnemen';$('#recordTop').textContent=label;$('#recordFloatBtn').textContent=label;
+ const label=active?'■  Stop opname':'●  Opnemen';$('#recordFloatBtn').textContent=label;
  $('#recordBtn').textContent=active?'■  Stop opname & download':'●  Start video-opname';$('#recordDestination').disabled=!!disabling;
  if(!active)$('#recordTime').textContent='00:00';
 }
@@ -607,11 +638,15 @@ function stopRecording(){
  finally{setTimeout(()=>['#recordTop','#recordBtn','#recordFloatBtn'].forEach(sel=>$(sel).disabled=false),700)}
 }
 function toggleRecording(){if(recording?.active||recording?.stopping)stopRecording();else startRecording()}
-$('#recordTop').onclick=toggleRecording;$('#recordBtn').onclick=toggleRecording;$('#recordFloatBtn').onclick=toggleRecording;
+$('#recordTop').onclick=()=>enterOutput(lastOutPreset);
 try{const lastDestination=localStorage.getItem('shapeslab-video-destination');if(recordingPresets[lastDestination])$('#recordDestination').value=lastDestination}catch(e){}
 $('#recordDestination').onchange=()=>{try{localStorage.setItem('shapeslab-video-destination',$('#recordDestination').value)}catch(e){}updateDestinationUI()};
 
-$('#begin').onclick=()=>openPattern(current);$('#navStudio').onclick=()=>openPattern(current);$('#home').onclick=e=>{e.preventDefault();toGallery()};$('#navGallery').onclick=toGallery;$('#back').onclick=toGallery;$('#scrollGallery').onclick=()=>$('#gallery').scrollIntoView({behavior:'smooth'});$('#navLive').onclick=()=>{if(current==='prism'&&!live)enterOutput('live');else toggleLive()};$('#formats').onclick=()=>enterOutput(lastOutPreset);$('#outGrid').onclick=toggleGrid;$('#outPng').onclick=saveOutputPng;$('#outRec').onclick=toggleOutRec;$('#outBack').onclick=exitOutput;$('#outPlay').onclick=()=>setPlaying(!playing);
+$('#begin').onclick=()=>openPattern(current);$('#navStudio').onclick=()=>openPattern(current);$('#home').onclick=e=>{e.preventDefault();toGallery()};$('#navGallery').onclick=toGallery;$('#back').onclick=toGallery;$('#scrollGallery').onclick=()=>$('#gallery').scrollIntoView({behavior:'smooth'});$('#navLive').onclick=()=>enterOutput('live');
+{const desc={instagram:'1080 × 1920 · Reel',tiktok:'1080 × 1920',youtube:'3840 × 2160 · 4K',live:'schermresolutie',thumbnail:'1280 × 720 · PNG'};
+ $('#formatGrid').innerHTML=OUTPUT_ORDER.map((id,i)=>`<button class="btn" data-preset="${id}"><span>${i+1} · ${OUTPUT_PRESETS[id].label}</span><small>${desc[id]}</small></button>`).join('');
+ $('#formatGrid').querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>enterOutput(b.dataset.preset))}
+$('#outPalette').onchange=e=>{if(e.target.value!=='custom')applyPalette(e.target.value);e.target.blur()};$('#outGrid').onclick=toggleGrid;$('#outPng').onclick=saveOutputPng;$('#outRec').onclick=toggleOutRec;$('#outBack').onclick=exitOutput;$('#outPlay').onclick=()=>setPlaying(!playing);
 $('#livePanel').querySelectorAll('[data-act]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();livePanelAction(b.dataset.act)});
 $('#livePanel').addEventListener('pointerdown',ev=>ev.stopPropagation());
 $('#outView').addEventListener('pointerdown',ev=>{if(outPreset!=='live')return;const open=$('#outputStage').classList.contains('panel-open');showLivePanel(!open)});
