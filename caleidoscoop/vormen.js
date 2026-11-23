@@ -131,7 +131,8 @@
     var out = [], i;
     tessellate(rng, 2 + Math.round(c * 0.5), 3 + c * 0.6, out, { mode: 0, al0: 0.25, al1: 0.6, lw: 0.002 });
     tessellate(rng, 2 + Math.round(c * 0.3), 2 + c * 0.4, out, { mode: 1, al0: 0.25, al1: 0.5, lw: 0.0025, lighter: true, flicker: 0.5 });
-    for (i = 0; i < n; i++) {
+    var ns = Math.round(n * 0.7);
+    for (i = 0; i < ns; i++) {
       var r = rPos(rng);
       var s = anim(rng, { k: 'shard', r: r, a: rng(), s: rr(rng, 0.06, 0.18) * (0.6 + r) * (1.2 - c * 0.04), asp: rr(rng, 0.18, 0.4),
         c: colI(rng), rot: rng() < 0.6 ? rr(rng, -0.4, 0.4) : rng() * TAU, al: rr(rng, 0.3, 0.6), l: 1, m: 2, lw: 0.002 }, 0.7);
@@ -168,7 +169,7 @@
     for (i = 0; i < nRos; i++) {
       var r3 = rPos(rng);
       out.push(anim(rng, { k: 'ros', r: r3, a: rng() < 0.25 ? Math.round(rng()) : rng(), s: rr(rng, 0.05, 0.13) * (0.6 + r3) * (1.2 - c * 0.04), n: ri(rng, 5, 9),
-        c: colI(rng), c2: colI(rng), c3: colI(rng), rot: rng() * TAU, al: 0.95, m: 2, lw: 0.002 }, 1));
+        c: colI(rng), c2: colI(rng), c3: colI(rng), rot: rng() * TAU, al: 0.95, m: rng() < 0.3 ? 2 : 0, lw: 0.002 }, 1));
     }
     return out;
   };
@@ -196,11 +197,18 @@
     var edges = [rr(rng, 0.06, 0.12)];
     for (i = 1; i <= nr; i++) edges.push(edges[0] + (1.06 - edges[0]) * Math.pow(i / nr, 0.85));
     out.push({ k: 'circ', r: 0, a: 0.5, s: edges[0] * 1.2, c: colI(rng), c2: colI(rng), m: 2, al: 1, lw: 0.004, rot: 0, ph: 0, w: 0.4, dr: 0, da: 0, pu: 0.1, sp: 0, abs: 1 });
+    // stervormige lagen met punten op de spiegellijnen: geven de mandala radiale structuur
+    var nst = 2 + Math.round(c / 4);
+    for (i = 0; i < nst; i++) {
+      var ro = rr(rng, 0.35, 1.08) * (1 - i * 0.12), ri_ = ro * rr(rng, 0.35, 0.7), tipA = rng() < 0.5 ? 0 : 0.5;
+      out.push({ k: 'pp', pts: tipA === 0 ? [0, 0.5, ro, -0.001, ri_, 0.5, ro, 1.001, 0, 0.5] : [0, 0.5, ri_, 0, ro, 0.5, ri_, 1, 0, 0.5],
+        c: colI(rng), m: 2, al: rr(rng, 0.6, 0.9), lw: 0.003, ph: rng() * TAU, w: 0.3, fl: 0, nw: 1 });
+    }
     var motifs = ['dots', 'dots', 'scallop', 'zig', 'petals', 'rings', 'ruit'];
     var dens = rr(rng, 5, 9) * (0.7 + c * 0.06);
     for (i = 0; i < nr; i++) {
       var r0 = edges[i], r1 = edges[i + 1], mid = (r0 + r1) / 2, h = r1 - r0;
-      if (rng() < 0.7) out.push(anim(rng, { k: 'band', r0: r0, r1: r1, c: colI(rng), al: rr(rng, 0.35, 0.8) }, 0.15));
+      if (rng() < 0.45) out.push(anim(rng, { k: 'band', r0: r0, r1: r1, c: colI(rng), al: rr(rng, 0.25, 0.6) }, 0.15));
       out.push({ k: 'arcl', r: r1, c: colI(rng), al: 0.9, lw: rr(rng, 0.003, 0.008) });
       var mo = motifs[Math.floor(rng() * motifs.length)], col = colI(rng), col2 = colI(rng);
       var d = dens / Math.max(0.25, mid) * (0.6 + rng() * 0.8) * 1.0;
@@ -245,23 +253,23 @@
     var nf = 3 + Math.round(c / 3);
     for (i = 0; i < nf; i++) {
       var a0 = rr(rng, -0.1, 0.9), r1 = rr(rng, 0.5, 1.1);
-      out.push({ k: 'pp', pts: [0, 0.5, r1, a0, rr(rng, 0.5, 1.1), a0 + rr(rng, 0.15, 0.5)], c: colI(rng), m: 0, al: rr(rng, 0.2, 0.4), lw: 0.002, ph: rng() * TAU, w: 0.3, fl: 0 });
+      out.push({ k: 'pp', pts: [0, 0.5, r1, a0, rr(rng, 0.5, 1.1), a0 + rr(rng, 0.15, 0.5)], c: colI(rng), m: 0, al: rr(rng, 0.25, 0.5), lw: 0.002, ph: rng() * TAU, w: 0.3, fl: 0 });
     }
     var nArc = Math.round(n * 0.25), nSp = Math.max(2, Math.round(n * 0.15)), nRay = Math.round(n * 0.35), nWeb = n - nArc - nSp - nRay;
     for (i = 0; i < nArc; i++) {
       var ar0 = rng();
-      out.push(anim(rng, { k: 'arcl', r: rr(rng, 0.05, 1.02), a0: ar0 < 0.5 ? -0.1 : rr(rng, 0, 0.6), a1: ar0 < 0.5 ? 1.1 : rr(rng, 0.6, 1.1), c: colI(rng), al: rr(rng, 0.6, 1), lw: rr(rng, 0.002, 0.012) }, 0.6));
+      out.push(anim(rng, { k: 'arcl', r: rr(rng, 0.05, 1.02), a0: ar0 < 0.5 ? -0.1 : rr(rng, 0, 0.6), a1: ar0 < 0.5 ? 1.1 : rr(rng, 0.6, 1.1), c: colI(rng), al: rr(rng, 0.6, 1), lw: rr(rng, 0.002, 0.01), q: rng() * 0.6 }, 0.6));
     }
     for (i = 0; i < nSp; i++) {
       out.push(anim(rng, { k: 'spir', r0: rr(rng, 0, 0.2), r1: rr(rng, 0.8, 1.1), a0: rng(), turns: rr(rng, 0.6, 2.5) * (rng() < 0.5 ? -1 : 1), c: colI(rng), al: 0.9, lw: rr(rng, 0.003, 0.01) }, 0.7));
     }
     for (i = 0; i < nRay; i++) {
       var ra = rng(), rs = rr(rng, 0, 0.6);
-      out.push(anim(rng, { k: 'ray', r0: rs, a0: ra, r1: Math.min(1.1, rs + rr(rng, 0.2, 0.9)), a1: ra + rr(rng, -0.3, 0.3), c: colI(rng), al: rr(rng, 0.6, 1), lw: rr(rng, 0.002, 0.008) }, 0.7));
+      out.push(anim(rng, { k: 'ray', r0: rs, a0: ra, r1: Math.min(1.1, rs + rr(rng, 0.2, 0.9)), a1: ra + rr(rng, -0.3, 0.3), c: colI(rng), al: rr(rng, 0.6, 1), lw: rr(rng, 0.002, 0.006), q: rng() }, 0.7));
     }
     for (i = 0; i < nWeb; i++) {
       var p = rPos(rng), q = Math.min(1.08, p + rr(rng, -0.3, 0.3));
-      out.push(anim(rng, { k: 'ray', r0: p, a0: rr(rng, -0.05, 1.05), r1: Math.max(0, q), a1: rr(rng, -0.05, 1.05), c: colI(rng), al: rr(rng, 0.5, 0.9), lw: rr(rng, 0.0015, 0.004), dot: rng() < 0.5 }, 0.7));
+      out.push(anim(rng, { k: 'ray', r0: p, a0: rr(rng, -0.05, 1.05), r1: Math.max(0, q), a1: rr(rng, -0.05, 1.05), c: colI(rng), al: rr(rng, 0.4, 0.8), lw: rr(rng, 0.0015, 0.0035), dot: rng() < 0.5, q: rng() }, 0.7));
     }
     return out;
   };
@@ -273,9 +281,16 @@
   }
 
   /* ---------- tekenen ---------- */
-  var W = 1, R = 1, T = 0, U = 1, P = null, NC = 1, X = 0, Y = 0;
+  var LIGHT = 'lighter', lastBg = '', KEEP = 1, W = 1, R = 1, T = 0, U = 1, P = null, NC = 1, X = 0, Y = 0;
   var colors = null;
 
+  function lum(hex) {
+    var h = String(hex || '#000').replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var v = parseInt(h.slice(0, 6), 16);
+    if (isNaN(v)) return 0;
+    return (0.2126 * (v >> 16 & 255) + 0.7152 * (v >> 8 & 255) + 0.0722 * (v & 255)) / 255;
+  }
   function col(i) { return colors[((i % NC) + NC) % NC]; }
   function pol(r, a) { var q = a * W, rp = r * R; X = rp * cos(q); Y = rp * sin(q); }
   // vloeiende, continue vervorming voor mozaïeken: geen naden ontstaan
@@ -295,8 +310,10 @@
   }
 
   function drawShape(ctx, s) {
+    // lijnen dunnen uit bij smalle wiggen (anders wordt het na spiegelen een warboel)
+    if (s.q !== undefined && s.q > KEEP) return;
     ctx.globalAlpha = s.al == null ? 1 : s.al;
-    ctx.globalCompositeOperation = s.l ? 'lighter' : 'source-over';
+    ctx.globalCompositeOperation = s.l ? LIGHT : 'source-over';
     var lw = (s.lw || 0.003) * R, i, n, osc, r, a, pulse, size, ang, ca, sa, x, y, lx, ly, q;
     switch (s.k) {
       case 'band': {
@@ -320,8 +337,14 @@
       case 'pp': {
         var pts = s.pts;
         ctx.beginPath();
-        warp(pts[0], pts[1]); ctx.moveTo(X, Y);
-        for (i = 2; i < pts.length; i += 2) { warp(pts[i], pts[i + 1]); ctx.lineTo(X, Y); }
+        if (s.nw) {
+          pulse = 1 + 0.04 * sin(T * s.w + s.ph);
+          pol(pts[0] * pulse, pts[1]); ctx.moveTo(X, Y);
+          for (i = 2; i < pts.length; i += 2) { pol(pts[i] * pulse, pts[i + 1]); ctx.lineTo(X, Y); }
+        } else {
+          warp(pts[0], pts[1]); ctx.moveTo(X, Y);
+          for (i = 2; i < pts.length; i += 2) { warp(pts[i], pts[i + 1]); ctx.lineTo(X, Y); }
+        }
         ctx.closePath();
         if (s.fl) ctx.globalAlpha = s.al * (1 - s.fl + s.fl * (0.5 + 0.5 * sin(T * s.w + s.ph)));
         paint(ctx, s, lw);
@@ -536,6 +559,9 @@
     W = wedge; R = R_; T = t || 0; P = palette; colors = palette.colors; NC = colors.length;
     // vormgrootte schaalt mee met de wigbreedte (2π/32 .. 2π/4)
     U = R * Math.min(1.1, 0.12 + wedge * 0.6);
+    KEEP = Math.min(1, 0.25 + wedge * 0.7);
+    // 'lighter' alleen op donkere achtergronden; op lichte (bv. pastel) zou het tot wit uitbijten
+    if (palette.background !== lastBg) { lastBg = palette.background; LIGHT = lum(lastBg) > 0.45 ? 'multiply' : 'lighter'; }
     ctx.save();
     ctx.lineJoin = 'round';
     for (var i = 0; i < shapes.length; i++) drawShape(ctx, shapes[i]);
