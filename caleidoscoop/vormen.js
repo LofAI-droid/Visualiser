@@ -155,7 +155,7 @@
         rot: 0, al: rr(rng, 0.7, 0.95), m: 2, lw: 0.003, abs: 1 }, 0.4));
     }
     out.push(anim(rng, { k: 'petal', r: 0, a: 0.5, s: rr(rng, 0.5, 0.9), asp: 0.45, c: colI(rng), c2: colI(rng), rot: 0, al: 0.85, m: 2, lw: 0.003, abs: 1 }, 0.4));
-    var nRos = Math.round(n * 0.4), nCurl = Math.round(n * 0.3), nLeaf = n - nRos - nCurl;
+    var nRos = Math.round(n * 0.38), nCurl = Math.round(n * 0.22), nLeaf = n - nRos - nCurl;
     for (i = 0; i < nLeaf; i++) {
       var r = rPos(rng);
       out.push(anim(rng, { k: 'petal', r: r, a: rng(), s: rr(rng, 0.08, 0.2) * (0.6 + r), asp: rr(rng, 0.3, 0.5), c: colI(rng), c2: colI(rng),
@@ -364,7 +364,7 @@
       }
       case 'spir': {
         osc = sin(T * s.w + s.ph);
-        var m = 48, tw = s.turns + s.da * 4 * osc;
+        var m = 32, tw = s.turns + s.da * 4 * osc;
         ctx.beginPath();
         for (i = 0; i <= m; i++) {
           var f = i / m;
@@ -460,7 +460,7 @@
         return;
       }
       case 'curl': {
-        var M = 28, tt = s.turns * TAU * s.dir;
+        var M = 18, tt = s.turns * TAU * s.dir;
         ctx.beginPath();
         for (i = 0; i <= M; i++) {
           var f2 = i / M, qq = ang + tt * f2, rad2 = size * (1 - f2 * 0.88);
@@ -468,8 +468,7 @@
           lx = x + cos(qq) * rad2 - ca * size; ly = y + sin(qq) * rad2 - sa * size;
           if (i) ctx.lineTo(lx, ly); else ctx.moveTo(x - ca * size * 2, y - sa * size * 2), ctx.lineTo(lx, ly);
         }
-        ctx.strokeStyle = col(s.c); ctx.lineWidth = lw; ctx.lineCap = 'round'; ctx.stroke();
-        ctx.beginPath(); ctx.arc(lx, ly, lw * 1.3, 0, TAU); ctx.fillStyle = col(s.c); ctx.fill();
+        ctx.strokeStyle = col(s.c); ctx.lineWidth = lw; ctx.stroke();
         return;
       }
       case 'blob': {

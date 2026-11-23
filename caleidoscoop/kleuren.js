@@ -103,9 +103,25 @@
   /* ---------- modi ---------- */
   // Elke modus levert ruwe {bg:[L,C,H], line:[L,C,H], cols:[[L,C,H],...]}; gamut-mapping volgt daarna.
 
+  // Donkere geeltinten worden olijf/modder: geef geel-achtige tinten de hoogste helderheden.
+  function liftYellows(hues, Ls) {
+    var idx = [], j;
+    for (j = 0; j < hues.length; j++) {
+      var d = Math.abs(((hues[j] - 95) % 360 + 540) % 360 - 180);
+      if (d < 35) idx.push(j);
+    }
+    if (!idx.length) return;
+    var sorted = Ls.slice().sort(function (a, b) { return b - a; });
+    for (var k = 0; k < idx.length; k++) {
+      var want = sorted[k], at = Ls.indexOf(want), y = idx[k];
+      var tmpL = Ls[y]; Ls[y] = want; Ls[at] = tmpL;
+    }
+  }
+
   function standard(rng, n, hues, Llo, Lhi, Clo, Chi, bgHue) {
     var Ls = spreadL(rng, n, Llo, Lhi);
     var cols = [];
+    liftYellows(hues, Ls);
     for (var j = 0; j < n; j++) cols.push([Ls[j], range(rng, Clo, Chi), hues[j]]);
     return {
       bg: [range(rng, 0.14, 0.19), range(rng, 0.015, 0.035), bgHue],
@@ -171,13 +187,13 @@
       id: 'pastel', name: 'Pastel',
       make: function (rng, n) {
         var base = rng() * 360, dark = rng() < 0.35, cols = [];
-        var Ls = dark ? spreadL(rng, n, 0.8, 0.93) : spreadL(rng, n, 0.6, 0.8);
+        var Ls = dark ? spreadL(rng, n, 0.72, 0.88) : spreadL(rng, n, 0.5, 0.74);
         for (var j = 0; j < n; j++) {
-          cols.push([Ls[j], range(rng, 0.07, 0.11), wrap(base + j * 137.508 + (rng() - 0.5) * 10)]);
+          cols.push([Ls[j], range(rng, 0.08, 0.12) + (dark ? -0.015 : 0.02), wrap(base + j * 137.508 + (rng() - 0.5) * 10)]);
         }
         return dark
           ? { bg: [0.24, 0.02, base], line: [0.97, 0.01, base], cols: cols }       // gedempt donker
-          : { bg: [0.965, 0.012, base + 40], line: [0.38, 0.04, base], cols: cols }; // licht, crème
+          : { bg: [0.965, 0.012, base + 40], line: [0.3, 0.05, base], cols: cols }; // licht, crème (kleuren dieper, als waterverf op papier)
       }
     },
     {
@@ -193,11 +209,17 @@
     {
       id: 'herfst', name: 'Aarde & herfst',
       make: function (rng, n) {
-        // Rood, roest, oker, mosterd, olijf.
-        var hues = [];
-        for (var j = 0; j < n; j++) hues.push(range(rng, 25, 120));
-        var Ls = spreadL(rng, n, 0.5, 0.86), cols = [];
-        for (j = 0; j < n; j++) cols.push([Ls[j], range(rng, 0.07, 0.14), hues[j]]);
+        // Vaste ankers [L, C, H]: baksteen, roest, oker, goud, mos, dennengroen, crème, pruim.
+        var anchors = shuffle(rng, [
+          [0.5, 0.14, 28], [0.62, 0.14, 45], [0.74, 0.13, 68], [0.85, 0.13, 88],
+          [0.58, 0.09, 125], [0.47, 0.06, 165], [0.93, 0.04, 85], [0.45, 0.08, 350]
+        ]);
+        var cols = [];
+        for (var j = 0; j < n; j++) {
+          var a = anchors[j % anchors.length], rep = Math.floor(j / anchors.length);
+          cols.push([clamp(a[0] + (rng() - 0.5) * 0.06 + (rep % 2 ? 0.1 : 0) * (a[0] < 0.7 ? 1 : -1), 0, 1),
+            a[1] * range(rng, 0.85, 1.1), a[2] + (rng() - 0.5) * 12]);
+        }
         return { bg: [0.17, 0.025, 55], line: [0.93, 0.03, 80], cols: cols };
       }
     },
@@ -206,10 +228,10 @@
       make: function (rng, n) {
         // Diepe edelsteentinten (robijn, saffier, smaragd, amber, amethist) met donkere loodlijnen.
         var base = rng() * 360, step = 360 / Math.max(n, 4), cols = [];
-        var Ls = spreadL(rng, n, 0.55, 0.8);
+        var Ls = spreadL(rng, n, 0.42, 0.72);
         for (var j = 0; j < n; j++) cols.push([Ls[j], 0.26, wrap(base + j * step + (rng() - 0.5) * 16)]);
         shuffle(rng, cols);
-        return { bg: [0.3, 0.012, base], line: [0.12, 0.004, base], cols: cols };
+        return { bg: [0.26, 0.012, base], line: [0.1, 0.004, base], cols: cols };
       }
     },
     {
