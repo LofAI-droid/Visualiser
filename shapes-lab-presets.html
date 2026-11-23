@@ -2,7 +2,12 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Shapes Lab">
+<meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#0d0e10">
 <title>SHAPES LAB — Generatieve visuals</title>
 <style>
@@ -74,7 +79,58 @@ body.output>header,body.output>main,body.output>.footer{display:none}
 #outputStage.live,#outputStage.live *{cursor:none}
 .outtoast{position:absolute;left:24px;bottom:22px;z-index:60;padding:8px 12px;border-radius:6px;background:#000000c8;color:#fff;font:600 15px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif;opacity:0;transition:opacity .15s;pointer-events:none;font-variant-numeric:tabular-nums;max-width:calc(100% - 48px)}
 .outtoast.show{opacity:1}
-@media(max-width:800px){.outbar{padding:8px 10px;gap:6px}.outinfo{display:none}}
+#outputStage.panel-open .outtoast{bottom:auto;top:max(18px,env(safe-area-inset-top))}
+
+.outbtns{display:flex;gap:8px;flex-wrap:wrap}.outbtns .btn{gap:0}
+/* Bediening voor Live via aanraken of klikken (niet zichtbaar in opnames: DOM, niet op het canvas). */
+.livepanel{position:absolute;left:0;right:0;margin:0 auto;width:max-content;bottom:max(18px,env(safe-area-inset-bottom));z-index:61;display:none;flex-wrap:wrap;justify-content:center;gap:8px;padding:10px;max-width:calc(100% - 24px);border:1px solid #ffffff2a;border-radius:10px;background:#111315e6;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+#outputStage.live.panel-open .livepanel{display:flex}
+#outputStage.live.panel-open,#outputStage.live.panel-open *{cursor:auto}
+#outputStage.live.panel-open .livepanel button{cursor:pointer}
+.lp-group{display:flex;align-items:center;gap:5px;color:#c8ccd0;font-size:12px;padding:0 4px}
+.lp-group span{min-width:62px;text-align:right}
+.livepanel .btn{min-width:40px}
+/* Toetsenbordhints enkel tonen op toestellen met een precieze aanwijzer (muis/trackpad). */
+.kh{opacity:.6}
+@media (hover:none),(pointer:coarse){.kh,.hint-keys{display:none!important}}
+.hint-touch{display:none}
+@media (hover:none),(pointer:coarse){.hint-touch{display:inline}}
+/* Notch en afgeronde hoeken (iOS/Android) */
+header{padding-left:max(3.5vw,env(safe-area-inset-left));padding-right:max(3.5vw,env(safe-area-inset-right));padding-top:max(21px,env(safe-area-inset-top))}
+.outbar{padding-top:max(10px,env(safe-area-inset-top));padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+#outputStage.live .outview{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.outtoast{left:max(24px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom))}
+#outputStage{height:100vh;height:100dvh}
+/* Aanraakschermen: grotere doelen, geen 'kleverige' hover, geen zoom bij focus op invoervelden (iOS). */
+@media (pointer:coarse){
+ .btn.tiny{min-height:40px;padding:9px 12px}.outtab{min-height:38px;padding:8px 12px}.filter{min-height:36px;padding:8px 13px}
+ .control input[type=range]{height:28px;background:linear-gradient(#4d5257,#4d5257) center/100% 2px no-repeat}
+ .control input[type=range]::-webkit-slider-thumb{width:24px;height:24px}
+ .control input[type=range]::-moz-range-thumb{width:22px;height:22px}
+ input,select,textarea{font-size:16px!important}
+ .checkline input{width:22px;height:22px}
+}
+@media (hover:none){.tile:hover{transform:none;border-color:#292b2f}.btn:hover{background:transparent}.btn.primary:hover{background:#e4e4df}.preset:hover{background:#1e2223}}
+@media(max-width:560px){.livepanel{gap:6px;padding:8px}.livepanel .btn.tiny{padding:9px 10px}}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+/* Smalle schermen: presets op één scrollbare rij, knoppen compact op de tweede rij. */
+@media(max-width:800px){
+ .outbar{padding-bottom:8px;gap:6px}.outinfo{display:none}.outbar .grow{display:none}
+ .outtabs{flex-wrap:nowrap;overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+ .outtabs::-webkit-scrollbar{display:none}.outtab{flex:none}
+ .outbtns{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;width:100%}
+ .outbtns .btn{padding-left:2px;padding-right:2px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .outbtns .lbl{display:inline}
+ .outbtns .btn{gap:2px}
+ .lp-group span{min-width:0}
+}
+/* Telefoon in liggende stand: alles op één scrollbare rij zodat het beeld zo groot mogelijk blijft. */
+@media(max-height:500px) and (orientation:landscape){
+ #outputStage .outbar{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-top:max(6px,env(safe-area-inset-top));padding-bottom:6px}.outbar::-webkit-scrollbar{display:none}
+ #outputStage .outtabs{width:auto;flex:none}#outputStage .outbtns{display:flex;width:auto;flex:none;gap:5px}.outbtns .lbl{display:none}.outbtns .btn{min-width:40px}.outtab{padding-left:9px;padding-right:9px;font-size:11px}.outtab b{margin-right:3px}.outbar{gap:5px}.outbar .btn.tiny,.outtab{min-height:36px;padding-top:6px;padding-bottom:6px}
+ .livepanel .lbl-l{display:none}
+}
 </style>
 </head>
 <body>
@@ -89,16 +145,17 @@ body.output>header,body.output>main,body.output>.footer{display:none}
   <div class="stagepanel">
    <div class="stagehead"><div><button class="top-close" id="back">← Terug naar de galerij</button><h1 id="patternTitle">Prism Studies</h1><p id="patternDesc">Spiegelingen, lijnen en licht.</p></div><div class="tools"><button class="btn tiny" id="shuffle" title="Nieuwe variatie">↻ &nbsp; Randomiseer</button><button class="btn tiny" id="playBtn">Ⅱ &nbsp; Pauze</button><button class="btn tiny" id="recordTop" title="Start of stop een video-opname">● &nbsp; Opnemen</button><button class="btn tiny" id="formats" title="Uitvoerformaten voor de mandala (toetsen 1–5)">▣ &nbsp; Formaten</button><button class="btn tiny" id="fullscreen" title="Volledig scherm">⛶</button></div></div>
    <div class="visualshell" id="visualshell"><div id="visual" style="width:100%;height:100%"></div><div class="record-float" id="recordFloat"><span class="record-time" id="recordTime">00:00</span><span class="floating-dest" id="recordFloatDestination">YouTube</span><button class="btn tiny" id="recordFloatBtn" title="Video-opname starten of stoppen">● &nbsp; Opnemen</button></div><div class="poster" id="poster"><div class="topline">SHAPES / EXPERIMENTAL STUDIES</div><div class="posterbottom"><div class="postertitle" id="posterText">LIGHT<br>FORMS</div><div class="postersub" id="posterSub">A live audiovisual study — 2026</div></div></div></div>
-   <div class="stagefoot"><div><span class="statusdot on" id="statusDot"></span><span id="stateText">Animatie actief</span></div><div class="hint">Tip: pijltjestoetsen = andere studie · spatie = afspelen/pauzeren · 1–5 = uitvoerformaten van de mandala</div><div><button class="btn tiny" id="saveVariation">♡ &nbsp; Bewaar</button></div></div>
+   <div class="stagefoot"><div><span class="statusdot on" id="statusDot"></span><span id="stateText">Animatie actief</span></div><div class="hint"><span class="hint-keys">Tip: pijltjestoetsen = andere studie · spatie = afspelen/pauzeren · 1–5 = uitvoerformaten van de mandala</span><span class="hint-touch">Tip: tik op ▣ Formaten voor Instagram, TikTok, YouTube, Live en thumbnail.</span></div><div><button class="btn tiny" id="saveVariation">♡ &nbsp; Bewaar</button></div></div>
   </div>
   <aside class="side"><h2>Parameters</h2><p class="sub">Verander de wiskundige regels, niet de afbeelding.</p><div class="groupname">Structuur</div><div id="sliders"></div><div class="divider"></div><div class="groupname">Kleur &amp; contrast</div><label for="paletteSelect" class="palette-label">Driekleurenpalet</label><select id="paletteSelect" class="video-select palette-select" aria-label="Kies een driekleurenpalet"></select><div class="palette-preview" id="palettePreview" aria-hidden="true"><span></span><span></span><span></span></div><div class="smallprint palette-help">Elke combinatie bevat een achtergrondkleur, lijnkleur en accentkleur. Je kunt de kleuren eronder ook zelf aanpassen.</div><div class="colorrow"><label class="colorslot">Achtergrond<input aria-label="Achtergrondkleur" id="bgColor" type="color" value="#0d0e10"></label><label class="colorslot">Lijnen<input aria-label="Lijnkleur" id="fgColor" type="color" value="#e6e9e4"></label><label class="colorslot">Accent<input aria-label="Accentkleur" id="accentColor" type="color" value="#b4c5bb"></label></div><div class="divider"></div><div class="groupname">Performance</div><div class="micline"><span>Microfoon-reactiviteit</span><button class="btn tiny" id="micBtn">Activeer</button></div><div class="wavebar"><span id="level"></span></div><div class="smallprint">Optioneel: reageert op het geluidsniveau. Toestemming voor microfoon vereist, bij voorkeur via HTTPS.</div><div class="divider"></div><div class="groupname">Beeld als bron</div><label class="upload">+ Upload een foto voor Prism Studies<input type="file" id="photo" accept="image/png,image/jpeg,image/webp"></label><div class="smallprint" id="photoHint">Gebruik je eigen foto in een gespiegeld radiaal patroon. De foto blijft op je apparaat.</div><div class="divider"></div><div class="groupname">Poster</div><label class="checkline"><input type="checkbox" id="posterToggle"> Toon typografische overlay</label><div id="posterFields" class="hide"><div class="control"><div class="controlhead"><label for="titleInput">Titel</label></div><input id="titleInput" value="LIGHT FORMS" style="width:100%;padding:9px;background:#212427;border:1px solid #45494e;border-radius:4px;color:white"></div><div class="control"><div class="controlhead"><label for="subtitleInput">Ondertitel</label></div><input id="subtitleInput" value="A live audiovisual study — 2026" style="width:100%;padding:9px;background:#212427;border:1px solid #45494e;border-radius:4px;color:white"></div></div><div class="divider"></div><div class="groupname">Exporteer</div><div class="exportrow"><button class="btn" id="svgDownload">↓ SVG</button><button class="btn" id="pngDownload">↓ PNG</button></div><div class="record-panel" id="recordPanel"><div class="record-panel-title"><span class="eyebrow">VIDEO-OPNAME</span><span class="record-panel-chip">Automatische instellingen</span></div><label for="recordDestination" class="destination-label">Waarvoor neem je op?</label><select id="recordDestination" class="video-select" aria-label="Kies het publicatiekanaal"><option value="youtube">YouTube · gewone video</option><option value="concert">Concert · liveprojectie (schermresolutie)</option><option value="instagram">Instagram · Reel</option><option value="tiktok">TikTok · video</option></select><div class="record-snapshot"><div class="record-frame-wrap"><div class="record-preview" id="recordPreview"><div class="record-preview-visual" id="recordPreviewArt"></div><div class="record-safe-guide" aria-hidden="true"></div></div><div class="record-frame-label">Voorbeeldkader</div></div><div class="record-specs" id="recordSpecs" aria-live="polite"></div></div><p class="record-compat" id="recordCompatibility" role="status"></p><button class="btn primary video-record-button" id="recordBtn">● &nbsp; Start video-opname</button><p class="smallprint video-hint" id="recordHelp">De app neemt alleen de animatie op, zonder bedieningsknoppen. Stop om te downloaden. Het tabblad moet open blijven. Er wordt geen geluid opgenomen.</p></div><div style="display:flex;gap:8px;margin-top:9px"><button class="btn" id="reset" style="flex:1">Herstel basis</button><button class="btn" id="copyConfig" style="flex:1">Kopieer settings</button></div><div class="notice" id="notice" role="status"></div><div class="divider"></div><div class="groupname">Bewaarde variaties</div><div class="presetlist" id="presets"></div><div class="smallprint">Variaties worden lokaal in deze browser opgeslagen.</div></aside>
  </section>
 </main>
 <div class="footer"><span>SHAPES LAB 4 — independent generative experiments.</span><span>Vrijstaande studie, geen kopie of onderdeel van <a href="https://bookofshapes.com" target="_blank" rel="noreferrer">Book of Shapes</a>.</span></div>
 <section id="outputStage" aria-label="Uitvoerformaat">
- <div class="outbar"><div class="outtabs" id="outTabs"></div><span class="outinfo" id="outInfo"></span><span class="outrec" id="outRecTime"></span><span class="grow"></span><button class="btn tiny" id="outGrid" title="Veilige zones tonen (g)">▦ &nbsp; Veilige zones · g</button><button class="btn tiny" id="outPng" title="Eén PNG op volle resolutie (s)">↓ PNG · s</button><button class="btn tiny" id="outRec" title="Video-opname op volle resolutie (r)">● &nbsp; Opnemen · r</button><button class="btn tiny" id="outBack" title="Terug naar de editor (Esc)">← Editor · Esc</button></div>
+ <div class="outbar"><div class="outtabs" id="outTabs"></div><span class="outinfo" id="outInfo"></span><span class="outrec" id="outRecTime"></span><span class="grow"></span><div class="outbtns"><button class="btn tiny" id="outPlay" title="Afspelen/pauzeren (spatie)">Ⅱ<span class="lbl">&nbsp;Pauze</span></button><button class="btn tiny" id="outGrid" title="Veilige zones tonen (g)">▦<span class="lbl">&nbsp;Zones</span><span class="kh">&nbsp;· g</span></button><button class="btn tiny" id="outPng" title="Eén PNG op volle resolutie (s)">↓ PNG<span class="kh">&nbsp;· s</span></button><button class="btn tiny" id="outRec" title="Video-opname op volle resolutie (r)">●<span class="lbl">&nbsp;Opnemen</span><span class="kh">&nbsp;· r</span></button><button class="btn tiny" id="outBack" title="Terug naar de editor (Esc)">←<span class="lbl">&nbsp;Editor</span><span class="kh">&nbsp;· Esc</span></button></div></div>
  <div class="outview" id="outView"><div class="outframe" id="outFrame"><canvas id="outCanvas" width="1080" height="1920"></canvas><canvas id="outOverlay" width="1080" height="1920"></canvas></div></div>
  <div class="outtoast" id="outToast" role="status" aria-live="polite"></div>
+ <div class="livepanel" id="livePanel" role="toolbar" aria-label="Live-bediening"><button class="btn tiny" data-act="exit">← Editor</button><button class="btn tiny" data-act="fs">⛶ Volledig scherm</button><div class="lp-group"><span>Helderheid</span><button class="btn tiny" data-act="b-" aria-label="Helderheid lager">−</button><button class="btn tiny" data-act="b+" aria-label="Helderheid hoger">+</button></div><div class="lp-group"><span>Lijn</span><button class="btn tiny" data-act="l-" aria-label="Dunnere lijn">−</button><button class="btn tiny" data-act="l+" aria-label="Dikkere lijn">+</button></div><button class="btn tiny" data-act="play">Ⅱ Pauze</button><button class="btn tiny" data-act="grid">▦ Zones</button><button class="btn tiny" data-act="rec">● Opnemen</button></div>
 </section>
 <script>
 (()=>{'use strict';
@@ -247,7 +304,7 @@ const OUTPUT_PRESETS={
  live:{label:'Live',w:0,h:0,factor:.40,cy:.45,line:3,bg:'#000000',rays:.4,bright:1,bitrate:16e6,clamp:true},
  thumbnail:{label:'Thumbnail',w:1280,h:720,factor:.60,cy:.5,line:4,bg:'#0E0F11',rays:.3,bright:1.2,glow:true,bitrate:8e6,clamp:false}
 };
-let wedgeClip=true,outPreset=null,lastOutPreset='instagram',showGrid=false,outDirty=true,outRec=null,toastTimer=null,photoImg=null,glowCv=null;
+let outFrameMs=0,panelTimer=null,wakeLock=null,wedgeClip=true,outPreset=null,lastOutPreset='instagram',showGrid=false,outDirty=true,outRec=null,toastTimer=null,photoImg=null,glowCv=null;
 const liveTune={bright:1,line:OUTPUT_PRESETS.live.line};
 const pc=(r,a)=>[Math.cos(a)*r,Math.sin(a)*r];
 // UI-zones in px bij 1080×1920 (horizontaal ×w/1080, verticaal ×h/1920) of in % van het beeld.
@@ -330,12 +387,15 @@ function drawSafeOverlay(o,L){
  lines.forEach(([t,c],i)=>{o.fillStyle=c;o.fillText(t,bx+pad,y0+pad+i*lh,L.W-32*k-pad*2)});
  o.restore();
 }
-function drawOutput(){const c=$('#outCanvas');if(!outPreset||!c.width)return;const L=outputLayout(outPreset,c.width,c.height);drawMandala(c.getContext('2d'),L,st,clock,level);
- const o=$('#outOverlay').getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,c.width,c.height);if(showGrid)drawSafeOverlay(o,L);outDirty=false}
+function drawOutput(){const c=$('#outCanvas');if(!outPreset||!c.width)return;const t0=performance.now();const L=outputLayout(outPreset,c.width,c.height);drawMandala(c.getContext('2d'),L,st,clock,level);
+ const ov=$('#outOverlay'),o=ov.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,ov.width,ov.height);if(showGrid&&ov.width===c.width)drawSafeOverlay(o,L);outDirty=false;
+ // Trage toestellen (bv. 4K op een telefoon): minder beelden per seconde in plaats van een bevroren interface. De resolutie blijft exact.
+ outFrameMs=outFrameMs*.8+(performance.now()-t0)*.2}
+function sizeOverlay(){const c=$('#outCanvas'),ov=$('#outOverlay'),W=showGrid?c.width:1,H=showGrid?c.height:1;if(ov.width!==W)ov.width=W;if(ov.height!==H)ov.height=H}
 function sizeOutput(){if(!outPreset)return;const P=OUTPUT_PRESETS[outPreset],live=outPreset==='live';let W,H,cssW,cssH,scale=1;
- if(live){const dpr=window.devicePixelRatio||1;cssW=window.innerWidth;cssH=window.innerHeight;W=Math.round(cssW*dpr);H=Math.round(cssH*dpr)}
+ if(live){const dpr=window.devicePixelRatio||1,v=$('#outView'),cs=getComputedStyle(v);cssW=Math.max(1,v.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight));cssH=Math.max(1,v.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom));W=Math.round(cssW*dpr);H=Math.round(cssH*dpr)}
  else{W=P.w;H=P.h;const v=$('#outView'),aw=Math.max(40,v.clientWidth-32),ah=Math.max(40,v.clientHeight-32);scale=Math.min(1,aw/W,ah/H);cssW=W*scale;cssH=H*scale}
- for(const c of[$('#outCanvas'),$('#outOverlay')]){if(c.width!==W)c.width=W;if(c.height!==H)c.height=H}
+ {const c=$('#outCanvas');if(c.width!==W)c.width=W;if(c.height!==H)c.height=H}sizeOverlay();
  $('#outFrame').style.width=cssW+'px';$('#outFrame').style.height=cssH+'px';
  $('#outInfo').textContent=`Rendert op ${W} × ${H} px`+(live?' (schermresolutie)':` · voorvertoning ${Math.round(scale*100)}%`);
  outDirty=true;drawOutput();
@@ -343,7 +403,10 @@ function sizeOutput(){if(!outPreset)return;const P=OUTPUT_PRESETS[outPreset],liv
 function updateOutBar(){
  $('#outTabs').innerHTML=OUTPUT_ORDER.map((id,i)=>`<button class="outtab${id===outPreset?' active':''}" data-preset="${id}"><b>${i+1}</b>${OUTPUT_PRESETS[id].label}</button>`).join('');
  $('#outTabs').querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>enterOutput(b.dataset.preset));
- $('#outGrid').classList.toggle('on',showGrid);$('#outRec').textContent=outRec?'■  Stop opname · r':'●  Opnemen · r';$('#outRec').classList.toggle('on',!!outRec);if(!outRec)$('#outRecTime').textContent='';
+ $('#outGrid').classList.toggle('on',showGrid);$('#outRec').innerHTML=outRec?'■<span class="lbl">&nbsp;Stop</span><span class="kh">&nbsp;· r</span>':'●<span class="lbl">&nbsp;Opnemen</span><span class="kh">&nbsp;· r</span>';$('#outRec').classList.toggle('on',!!outRec);
+ $('#outPlay').innerHTML=playing?'Ⅱ<span class="lbl">&nbsp;Pauze</span>':'▶<span class="lbl">&nbsp;Afspelen</span>';
+ const lp=$('#livePanel');lp.querySelector('[data-act=play]').textContent=playing?'Ⅱ Pauze':'▶ Afspelen';lp.querySelector('[data-act=rec]').textContent=outRec?'■ Stop opname':'● Opnemen';lp.querySelector('[data-act=grid]').classList.toggle('on',showGrid);
+ lp.querySelector('[data-act=fs]').textContent=(document.fullscreenElement||document.webkitFullscreenElement)?'✕ Volledig scherm':'⛶ Volledig scherm';if(!outRec)$('#outRecTime').textContent='';
 }
 function showToast(msg,ms=1500){const t=$('#outToast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),ms)}
 function enterOutput(id){
@@ -353,12 +416,13 @@ function enterOutput(id){
  $('#outputStage').classList.toggle('live',id==='live');updateOutBar();sizeOutput();
  try{const u=new URL(location.href);u.searchParams.set('preset',id);history.replaceState(null,'',u)}catch(e){}
  document.title='Mandala · '+OUTPUT_PRESETS[id].label+' — SHAPES LAB';
- if(id==='live'&&was!=='live')showToast('Live · f = volledig scherm · [ ] = helderheid · − = = lijndikte · Esc = terug',2600);
+ keepAwake(id==='live');if(id!=='live')showLivePanel(false);
+ if(id==='live'&&was!=='live')showToast(matchMedia('(hover:none),(pointer:coarse)').matches?'Live · tik op het beeld voor bediening':'Live · f = volledig scherm · [ ] = helderheid · − = = lijndikte · Esc = terug',2600);
 }
-function exitOutput(){if(outRec)stopOutRec();if(document.fullscreenElement||document.webkitFullscreenElement)(document.exitFullscreen?.()||document.webkitExitFullscreen?.())?.catch?.(()=>{});
+function exitOutput(){if(outRec)stopOutRec();keepAwake(false);showLivePanel(false);if(document.fullscreenElement||document.webkitFullscreenElement)(document.exitFullscreen?.()||document.webkitExitFullscreen?.())?.catch?.(()=>{});
  outPreset=null;$('#outputStage').classList.remove('live');document.body.classList.remove('output');
  try{const u=new URL(location.href);u.searchParams.delete('preset');u.searchParams.delete('grid');history.replaceState(null,'',u)}catch(e){}openPattern('prism')}
-function toggleGrid(){showGrid=!showGrid;updateOutBar();outDirty=true;drawOutput()}
+function toggleGrid(){showGrid=!showGrid;sizeOverlay();updateOutBar();outDirty=true;drawOutput()}
 function saveOutputPng(){const c=$('#outCanvas');drawOutput();c.toBlob(b=>{if(!b){showToast('PNG opslaan mislukt.');return}blobDownload(b,`shapes-mandala-${outPreset}-${c.width}x${c.height}-seed${st.seed}.png`);showToast(`PNG opgeslagen · ${c.width} × ${c.height}`,1800)},'image/png')}
 function startOutRec(){const c=$('#outCanvas');if(!window.MediaRecorder||!c.captureStream){showToast('Video-opname wordt hier niet ondersteund. Probeer Chrome, Edge of Safari.',2500);return}
  try{const P=OUTPUT_PRESETS[outPreset],mime=supportedVideoMime(),opts={videoBitsPerSecond:P.bitrate};if(mime)opts.mimeType=mime;
@@ -371,10 +435,11 @@ function startOutRec(){const c=$('#outCanvas');if(!window.MediaRecorder||!c.capt
 function stopOutRec(){const r=outRec;if(!r)return;outRec=null;try{r.rec.state!=='inactive'?r.rec.stop():r.rec.onstop?.()}catch(e){r.stream.getTracks().forEach(t=>t.stop())}updateOutBar()}
 function toggleOutRec(){outRec?stopOutRec():startOutRec()}
 function updateOutRecClock(){if(!outRec)return;const sec=Math.floor((performance.now()-outRec.meta.start)/1000);$('#outRecTime').textContent='● '+String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')}
-async function toggleOutFullscreen(){const el=$('#outputStage');try{if(document.fullscreenElement||document.webkitFullscreenElement){await(document.exitFullscreen?.()||document.webkitExitFullscreen?.())}else{await(el.requestFullscreen?.()||el.webkitRequestFullscreen?.())}}catch(e){showToast('Volledig scherm is niet beschikbaar.')}}
+const fsSupported=()=>!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);
+async function toggleOutFullscreen(){const el=$('#outputStage');if(!fsSupported()&&!document.fullscreenElement&&!document.webkitFullscreenElement){showToast('Volledig scherm kan niet in deze browser (bv. iPhone). Tip: Delen → Zet op beginscherm, en open de app vanaf daar.',4000);return}try{if(document.fullscreenElement||document.webkitFullscreenElement){await(document.exitFullscreen?.()||document.webkitExitFullscreen?.())}else{await(el.requestFullscreen?.()||el.webkitRequestFullscreen?.())}}catch(e){showToast('Volledig scherm is niet beschikbaar.')}}
 const DIGIT_CODES={Digit1:0,Digit2:1,Digit3:2,Digit4:3,Digit5:4,Numpad1:0,Numpad2:1,Numpad3:2,Numpad4:3,Numpad5:4};
 // e.code maakt 1–5 ook bruikbaar op AZERTY (&, é, ", ', ( zonder Shift).
-function presetFromKey(e){if(/^[1-5]$/.test(e.key))return OUTPUT_ORDER[+e.key-1];const i=DIGIT_CODES[e.code];return i===undefined?null:OUTPUT_ORDER[i]}
+function presetFromKey(e){if(/^[1-5]$/.test(e.key))return OUTPUT_ORDER[+e.key-1];if(e.altKey||e.key.length===1&&/[\[\]\-=+_]/.test(e.key))return null;const i=DIGIT_CODES[e.code];return i===undefined?null:OUTPUT_ORDER[i]}
 function outputKey(e){
  const key=e.key,low=key.length===1?key.toLowerCase():key;
  if(key===' '){e.preventDefault();setPlaying(!playing);outDirty=true;return}
@@ -387,11 +452,19 @@ function outputKey(e){
  if(low==='f'){e.preventDefault();toggleOutFullscreen();return}
  let act=key==='['?'b-':key===']'?'b+':(key==='-'||key==='_')?'l-':(key==='='||key==='+')?'l+':null;
  if(!act)act=e.code==='BracketLeft'?'b-':e.code==='BracketRight'?'b+':e.code==='NumpadSubtract'?'l-':e.code==='NumpadAdd'?'l+':null;
- if(!act)return;e.preventDefault();
+ if(!act)return;e.preventDefault();tune(act);
+}
+function tune(act){
  if(act[0]==='b'){liveTune.bright=Math.round(clamp(liveTune.bright+(act[1]==='+'?.1:-.1),.1,2)*10)/10;showToast('Helderheid '+Math.round(liveTune.bright*100)+'%')}
  else{liveTune.line=clamp(liveTune.line+(act[1]==='+'?.5:-.5),.5,12);showToast('Lijndikte '+liveTune.line.toFixed(1).replace('.',',')+' px')}
  outDirty=true;
 }
+// Live-paneel: tik/klik op het beeld toont het 4 s; elke actie houdt het open.
+function showLivePanel(on){const st_=$('#outputStage');clearTimeout(panelTimer);st_.classList.toggle('panel-open',on);$('#livePanel').setAttribute('aria-hidden',on?'false':'true');if(on){updateOutBar();panelTimer=setTimeout(()=>showLivePanel(false),4000)}}
+function livePanelAction(act){showLivePanel(true);
+ if(act==='exit'){showLivePanel(false);exitOutput()}else if(act==='fs')toggleOutFullscreen();else if(act==='play')setPlaying(!playing);else if(act==='grid')toggleGrid();else if(act==='rec')toggleOutRec();else tune(act)}
+// Scherm wakker houden tijdens Live (Chrome, Edge, Safari 16.4+, Android). Faalt stil waar het niet kan.
+async function keepAwake(on){try{if(on&&!wakeLock&&navigator.wakeLock&&document.visibilityState==='visible'){wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener?.('release',()=>{wakeLock=null})}else if(!on&&wakeLock){const w=wakeLock;wakeLock=null;await w.release()}}catch(e){wakeLock=null}}
 function notify(message){const e=$('#notice');e.textContent=message;e.classList.add('show');clearTimeout(noticeTimeout);noticeTimeout=setTimeout(()=>e.classList.remove('show'),4400)}
 function buildGallery(){const picked=previewFilter==='favoriet'?saved.map(x=>x.pattern):patterns.filter(p=>previewFilter==='alles'||p.category===previewFilter).map(p=>p.id);
  const tiles=$('#tiles');if(!picked.length){tiles.innerHTML='<p style="color:#9fa5a9">Je hebt nog geen variaties bewaard.</p>';return}
@@ -407,9 +480,9 @@ function renderControls(){const relevant=controls.filter(([key])=>!(key==='symme
 function openPattern(id){if(!patterns.some(x=>x.id===id))id='prism';current=id;live=false;document.body.classList.add('editing');document.body.classList.remove('live');$('#navGallery').classList.remove('active');$('#navStudio').classList.add('active');const pat=patterns.find(x=>x.id===id);$('#patternTitle').textContent=pat.name;$('#patternDesc').textContent=pat.desc;renderControls();renderPresets();draw(clock);window.scrollTo(0,0);document.title=pat.name+' — SHAPES LAB'}
 function toGallery(){if(recording?.active)stopRecording();live=false;document.body.classList.remove('editing','live');$('#navGallery').classList.add('active');$('#navStudio').classList.remove('active');buildGallery();document.title='SHAPES LAB — Generatieve visuals';window.scrollTo(0,0)}
 let previewFrames=0;function draw(t){const svg=renderSvg(current,st,t,level);$('#visual').innerHTML=svg;if(++previewFrames%10===0||previewFrames===1)$('#recordPreviewArt').innerHTML=svg;renderPalettePicker();updateFullBleed();if(recording?.active)queueVideoFrame(recording,svg);$('#poster').style.setProperty('--posterink',st.fg);$('#posterText').innerHTML=esc($('#titleInput').value).replace(/\s+/g,'<br>');$('#posterSub').textContent=$('#subtitleInput').value}
-function tick(ts){const editing=document.body.classList.contains('editing'),fps=outPreset?30:(recording?.active?recording.preset.fps:24);if((editing||outPreset)&&(playing||(outPreset&&outDirty))&&ts-last>=1000/fps){let dt=Math.min(.06,(ts-last)/1000||0.03);last=ts;if(playing){clock+=dt;if(analyser){const values=new Uint8Array(analyser.fftSize);analyser.getByteTimeDomainData(values);let rms=0;for(const v of values){const n=(v-128)/128;rms+=n*n}rms=Math.sqrt(rms/values.length);level=level*.73+Math.min(1,rms*4)*.27;$('#level').style.width=(level*100)+'%'}}if(outPreset)drawOutput();else draw(clock)}updateRecordClock();updateOutRecClock();requestAnimationFrame(tick)}
+function tick(ts){const editing=document.body.classList.contains('editing'),fps=outPreset?Math.min(30,1000/Math.max(1,outFrameMs*1.6)):(recording?.active?recording.preset.fps:24);if((editing||outPreset)&&(playing||(outPreset&&outDirty))&&ts-last>=1000/fps){let dt=Math.min(.06,(ts-last)/1000||0.03);last=ts;if(playing){clock+=dt;if(analyser){const values=new Uint8Array(analyser.fftSize);analyser.getByteTimeDomainData(values);let rms=0;for(const v of values){const n=(v-128)/128;rms+=n*n}rms=Math.sqrt(rms/values.length);level=level*.73+Math.min(1,rms*4)*.27;$('#level').style.width=(level*100)+'%'}}if(outPreset)drawOutput();else draw(clock)}updateRecordClock();updateOutRecClock();requestAnimationFrame(tick)}
 function updateFullBleed(){const node=$('#visual svg');if(node)node.setAttribute('preserveAspectRatio','xMidYMid meet')}
-function setPlaying(v){playing=v;outDirty=true;$('#playBtn').textContent=playing?'Ⅱ  Pauze':'▶  Afspelen';$('#statusDot').classList.toggle('on',playing);$('#stateText').textContent=playing?'Animatie actief':'Animatie gepauzeerd';if(!playing&&!outPreset)draw(clock)}
+function setPlaying(v){playing=v;outDirty=true;if(outPreset)updateOutBar();$('#playBtn').textContent=playing?'Ⅱ  Pauze':'▶  Afspelen';$('#statusDot').classList.toggle('on',playing);$('#stateText').textContent=playing?'Animatie actief':'Animatie gepauzeerd';if(!playing&&!outPreset)draw(clock)}
 function toggleLive(){if(!document.body.classList.contains('editing'))openPattern(current);live=!live;document.body.classList.toggle('live',live);$('#navLive').textContent=live?'✕  Editor tonen':'◉  Live modus';if(live){setPlaying(true)}else{draw(clock)}}
 function save(){saved.unshift({pattern:current,values:{...st},date:new Date().toISOString()});saved=saved.slice(0,18);try{localStorage.setItem('shapeslab-v1',JSON.stringify(saved))}catch(e){}renderPresets();notify('Variatie bewaard op dit apparaat.')}
 function renderPresets(){let cur=saved.filter(x=>x.pattern===current);$('#presets').innerHTML=cur.length?cur.map((x,i)=>`<button class="preset" data-i="${i}">Variatie ${i+1} · ${x.values.seed}</button>`).join(''):'<span style="color:#717880;font-size:11px">Nog geen variaties voor dit patroon.</span>';
@@ -527,7 +600,13 @@ $('#recordTop').onclick=toggleRecording;$('#recordBtn').onclick=toggleRecording;
 try{const lastDestination=localStorage.getItem('shapeslab-video-destination');if(recordingPresets[lastDestination])$('#recordDestination').value=lastDestination}catch(e){}
 $('#recordDestination').onchange=()=>{try{localStorage.setItem('shapeslab-video-destination',$('#recordDestination').value)}catch(e){}updateDestinationUI()};
 
-$('#begin').onclick=()=>openPattern(current);$('#navStudio').onclick=()=>openPattern(current);$('#home').onclick=e=>{e.preventDefault();toGallery()};$('#navGallery').onclick=toGallery;$('#back').onclick=toGallery;$('#scrollGallery').onclick=()=>$('#gallery').scrollIntoView({behavior:'smooth'});$('#navLive').onclick=()=>{if(current==='prism'&&!live)enterOutput('live');else toggleLive()};$('#formats').onclick=()=>enterOutput(lastOutPreset);$('#outGrid').onclick=toggleGrid;$('#outPng').onclick=saveOutputPng;$('#outRec').onclick=toggleOutRec;$('#outBack').onclick=exitOutput;window.addEventListener('resize',()=>{if(outPreset)sizeOutput()});['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{if(outPreset)requestAnimationFrame(sizeOutput)}));
+$('#begin').onclick=()=>openPattern(current);$('#navStudio').onclick=()=>openPattern(current);$('#home').onclick=e=>{e.preventDefault();toGallery()};$('#navGallery').onclick=toGallery;$('#back').onclick=toGallery;$('#scrollGallery').onclick=()=>$('#gallery').scrollIntoView({behavior:'smooth'});$('#navLive').onclick=()=>{if(current==='prism'&&!live)enterOutput('live');else toggleLive()};$('#formats').onclick=()=>enterOutput(lastOutPreset);$('#outGrid').onclick=toggleGrid;$('#outPng').onclick=saveOutputPng;$('#outRec').onclick=toggleOutRec;$('#outBack').onclick=exitOutput;$('#outPlay').onclick=()=>setPlaying(!playing);
+$('#livePanel').querySelectorAll('[data-act]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();livePanelAction(b.dataset.act)});
+$('#livePanel').addEventListener('pointerdown',ev=>ev.stopPropagation());
+$('#outView').addEventListener('pointerdown',ev=>{if(outPreset!=='live')return;const open=$('#outputStage').classList.contains('panel-open');showLivePanel(!open)});
+document.addEventListener('visibilitychange',()=>{if(outPreset==='live'&&document.visibilityState==='visible')keepAwake(true)});
+window.addEventListener('orientationchange',()=>{if(outPreset)setTimeout(sizeOutput,250)});
+if(window.visualViewport)visualViewport.addEventListener('resize',()=>{if(outPreset==='live')sizeOutput()});window.addEventListener('resize',()=>{if(outPreset)sizeOutput()});['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{if(outPreset)requestAnimationFrame(sizeOutput)}));
 $('#playBtn').onclick=()=>setPlaying(!playing);$('#fullscreen').onclick=async()=>{const v=$('#visualshell');try{if(document.fullscreenElement||document.webkitFullscreenElement){if(document.exitFullscreen)await document.exitFullscreen();else document.webkitExitFullscreen?.()}else if(v.requestFullscreen){await v.requestFullscreen()}else v.webkitRequestFullscreen?.()}catch(e){notify('Volledig scherm is niet beschikbaar in deze browser.')}updateFullBleed()};
 ['fullscreenchange','webkitfullscreenchange'].forEach(event=>document.addEventListener(event,updateFullBleed));
 
