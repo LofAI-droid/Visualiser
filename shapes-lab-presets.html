@@ -182,7 +182,18 @@ const palettes=[
  {id:'rust',name:'09 · Roest & leisteen',bg:'#222526',fg:'#e8e0d4',accent:'#ad7f6d'},
  {id:'frost',name:'10 · IJsblauw',bg:'#15232d',fg:'#dcebee',accent:'#81b6c4'},
  {id:'rose',name:'11 · Asroze',bg:'#ede5e2',fg:'#343036',accent:'#a8798a'},
- {id:'mono',name:'12 · Zilvergrijs',bg:'#141518',fg:'#efefeb',accent:'#84898d'}
+ {id:'mono',name:'12 · Zilvergrijs',bg:'#141518',fg:'#efefeb',accent:'#84898d'},
+ // Felle sets met hoog contrast (accent minstens 4,5:1 tegen de achtergrond)
+ {id:'neon',name:'13 · Neon & inkt',bg:'#07080d',fg:'#f5f7ff',accent:'#00e5ff'},
+ {id:'pink',name:'14 · Elektrisch roze',bg:'#0b0410',fg:'#ffe9f7',accent:'#ff2fa0'},
+ {id:'lime',name:'15 · Limoen & nacht',bg:'#050d08',fg:'#f2ffe9',accent:'#b6ff00'},
+ {id:'signal',name:'16 · Signaaloranje',bg:'#0d0905',fg:'#fff3e6',accent:'#ff7a00'},
+ {id:'gold',name:'17 · Ultramarijn & goud',bg:'#0a1260',fg:'#fff7e0',accent:'#ffc400'},
+ {id:'coral',name:'18 · Koraal op wit',bg:'#fffaf5',fg:'#12131a',accent:'#e8102e'},
+ {id:'cobalt',name:'19 · Kobalt op papier',bg:'#f7f9ff',fg:'#0b1030',accent:'#1f4bff'},
+ {id:'laser',name:'20 · Laserviolet',bg:'#0c0716',fg:'#f3edff',accent:'#b26bff'},
+ {id:'tropic',name:'21 · Tropisch',bg:'#003b3a',fg:'#fdfcf2',accent:'#ffd60a'},
+ {id:'alarm',name:'22 · Zwart & signaalrood',bg:'#000000',fg:'#ffffff',accent:'#ff3047'}
 ];
 const defaults={density:45,energy:44,frequency:4,symmetry:8,stroke:1.2,speed:30,seed:26,bg:'#0d0e10',fg:'#e6e9e4',accent:'#b4c5bb'};
 function matchPalette(values){return palettes.find(p=>p.bg.toLowerCase()===values.bg?.toLowerCase()&&p.fg.toLowerCase()===values.fg?.toLowerCase()&&p.accent.toLowerCase()===values.accent?.toLowerCase())?.id||'custom'}
