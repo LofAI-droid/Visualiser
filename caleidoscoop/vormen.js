@@ -176,7 +176,7 @@
 
   gen.glasscherven = function (rng, c, n) {
     var out = [], i;
-    tessellate(rng, 3 + Math.round(c * 0.6), 3 + c * 0.9, out, { mode: 2, al0: 0.72, al1: 0.95, lw: 0.0055 });
+    tessellate(rng, 3 + Math.round(c * 0.6), 3 + c * 0.9, out, { mode: 2, al0: 0.72, al1: 0.95, lw: 0.0065 });
     // kleine losse scherfjes en glinsteringen
     var extra = Math.round(n * 0.25);
     for (i = 0; i < extra; i++) {
@@ -204,6 +204,8 @@
       out.push({ k: 'pp', pts: tipA === 0 ? [0, 0.5, ro, -0.001, ri_, 0.5, ro, 1.001, 0, 0.5] : [0, 0.5, ri_, 0, ro, 0.5, ri_, 1, 0, 0.5],
         c: colI(rng), m: 2, al: rr(rng, 0.6, 0.9), lw: 0.003, ph: rng() * TAU, w: 0.3, fl: 0, nw: 1 });
     }
+    // buitenrand: vult ook de hoeken van het scherm (en uitgezoomd beeld)
+    out.push(anim(rng, { k: 'band', r0: 1.06, r1: 2.6, c: colI(rng), al: 0.55 }, 0));
     var motifs = ['dots', 'dots', 'scallop', 'zig', 'petals', 'rings', 'ruit'];
     var dens = rr(rng, 5, 9) * (0.7 + c * 0.06);
     for (i = 0; i < nr; i++) {
